@@ -4,8 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 
 <script type="text/javascript">
-
-
 function updateStatus(userId,status){
 	$.post(
 			"/admin/lockuser",
@@ -13,7 +11,7 @@ function updateStatus(userId,status){
 			function(data){
 				if(data.result==1){
 					alert("恭喜，处理成功！");
-					$("#content").load("/admin/users");
+					$("#content").load("/admin/users?name=${name}&page="+${info.pageNum});
 				}else{
 					alert(data.errorMsg);
 				}
@@ -22,9 +20,11 @@ function updateStatus(userId,status){
 		)	
 }
 
+function search() {
+	$("#content").load("/admin/users?name=" +$("#searchName").val());
+}
 </script>
   
-	
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
@@ -34,9 +34,9 @@ function updateStatus(userId,status){
     <div>
         <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <input type="button" class="btn btn-default" value="查询"/>
+                <input id="searchName" type="text" value="${name }" class="form-control" placeholder="Search">
+            </div> 
+            <input type="button" class="btn btn-default" onclick="search()"  value="查询"/>
         </form>
     </div>
     </div>
@@ -101,11 +101,22 @@ function updateStatus(userId,status){
 </div>
 
 <ul class="pagination">
-    <li><a href="#">&laquo;</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
+    <li><a href="javascript:goPage(${info.prePage })">&laquo;</a></li>
+    <c:forEach varStatus="index" begin="${info.pageNum-2 > 1? info.pageNum-2 : 1 }" 
+    		end="${info.pageNum+2 >info.pages ? info.pages : info.pageNum+2 }">
+    	<c:if test="${info.pageNum != index.index }">
+    		<li><a href="javascript:goPage(${index.index })">${index.index }</a></li>
+    	</c:if>
+    	<c:if test="${info.pageNum == index.index }">
+    		<li><a href="javascript:void"><strong>${index.index }</strong></a></li>
+    	</c:if>
+    </c:forEach>
+    <li><a href="javascript:goPage(${info.nextPage })">&raquo;</a></li>
 </ul>
+
+<script type="text/javascript">
+	function goPage(page) {
+		var url = "/admin/users?page="+page+ "&name=${name}";
+		$("#content").load(url);
+	}
+</script>

@@ -54,6 +54,7 @@ public class AdminController {
 		
 		PageInfo<User> userPage =  userService.getPageList(name,page);
 		request.setAttribute("info", userPage);
+		request.setAttribute("name", name);
 		
 		return "amdin/user/list";
 	}
