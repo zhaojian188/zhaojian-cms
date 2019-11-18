@@ -36,7 +36,13 @@ public class AdminController {
 	@Autowired
 	UserService userService;
 	
+	//前台访问页面
+	/*@RequestMapping("indexs")
+	public String indexs() {
+		return "index";
+	}*/
 	
+	//后台访问页面
 	@RequestMapping("index")
 	public String index() {
 		return "amdin/index";

@@ -8,6 +8,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 	</resultMap>
+	
+	<select id="findUserById" resultMap="userMapper">
+		SELECT * FROM cms_user WHERE id=${value}
+	</select>
+	
 	<select id="list" resultMap="userMapper">
 		SELECT * FROM cms_user 
 		<where>
@@ -21,4 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM cms_user 
 		WHERE id=#{value}
 	</select>
+	<!-- 注册 -->
+	<insert id="add">
+		INSERT INTO cms_user(username,password,nickname,birthday
+                   ,gender,locked,create_time,update_time,url,score,role) 
+		      values(#{username},#{password},#{nickname},#{birthday},
+		       #{gender},0,now(),now(),'',0,#{role}) 
+	</insert>
 </mapper>

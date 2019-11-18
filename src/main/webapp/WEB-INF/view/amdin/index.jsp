@@ -11,7 +11,7 @@
  <script type="text/javascript" src="/resource/bootstrap/js/bootstrap.js"></script>
 
 <!-- <link rel="stylesheet" href="/resource/css/index3.css"> -->
-<title>CMS管理平台</title>
+<title>CMS后台管理平台</title>
 
 <script type="text/javascript">
 	function showFuction(url){
@@ -73,7 +73,6 @@
 role="navigation">
 	<div align="center"> <font color="blue" size="5"> ----八维大数据学院1707D--- </font> </div>
 </nav>
-
 
 
 

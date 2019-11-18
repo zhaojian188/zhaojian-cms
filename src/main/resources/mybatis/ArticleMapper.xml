@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhaojian.dao.ArticleMapper">
+
+	<resultMap type="Article" id="articleMapper">
+		<id column="id" property="id"/>
+		<association property="user" column="user_id" select="com.zhaojian.dao.UserMapper.findUserById"></association>
+		<association property="channel" column="channel_id" select="com.zhaojian.dao.ChannelMapper.findById"></association>
+		<association property="category" column="category_id" select="com.zhaojian.dao.CategoryMapper.findById"></association>
+	</resultMap>
+
+	<select id="newList" resultType="Article">
+		SELECT id,title FROM cms_article 
+		WHERE deleted=0 AND status=1 
+		ORDER BY created DESC  limit ${value}
+	</select>
+	
+	<select id="hostList" resultMap="articleMapper" >
+		SELECT id,title,picture,channel_id,category_id,user_id,hits,commentCnt,created
+		FROM cms_article 
+		WHERE deleted=0 AND status=1 AND hot=1
+	</select>
+	
+	<select id="getById" resultMap="articleMapper">
+		SELECT * FROM cms_article 
+		  WHERE id=#{value} AND deleted=0 AND status=1
+	</select>
+	
+	<select id="listByCat" resultMap="articleMapper">
+		SELECT id,title,picture,channel_id,category_id,user_id,hits,commentCnt,created
+			FROM cms_article 
+			WHERE deleted=0 AND status=1 AND channel_id=#{chnId}
+			<if test=" categoryId!=0 ">
+			AND	category_id=#{categoryId}
+			</if>
+			ORDER BY created DESC
+	</select>	
+	
+	<!-- 根据用户获取文章 -->
+	<select id="listByUser" resultMap="articleMapper">
+		SELECT id,title,picture,channel_id,category_id,hits,commentCnt,created,status
+			FROM cms_article 
+			WHERE deleted=0  AND user_id=#{value}
+			ORDER BY created DESC
+	</select>
+	
+	
+</mapper>

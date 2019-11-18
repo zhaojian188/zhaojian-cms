@@ -34,7 +34,7 @@ public interface UserService {
 
 	/** 
 	 * @Title: getUserById 
-	 * @Description: TODO
+	 * @Description: 根据id获取用户信息
 	 * @param userId
 	 * @return
 	 * @return: User
@@ -43,12 +43,39 @@ public interface UserService {
 
 	/** 
 	 * @Title: updateStatus 
-	 * @Description: TODO
+	 * @Description: 修改用户的状态 也就是解禁和封禁
 	 * @param userId
 	 * @param status
 	 * @return
 	 * @return: int
 	 */
 	int updateStatus(Integer userId, int status);
+
+	/** 
+	 * @Title: register 
+	 * @Description: 注册用户
+	 * @param user
+	 * @return
+	 * @return: int
+	 */
+	int register(User user);
+
+	/** 
+	 * @Title: 登录 
+	 * @Description: TODO
+	 * @param user
+	 * @return
+	 * @return: User
+	 */
+	User login(User user);
+
+	/** 
+	 * @Title: findByName 
+	 * @Description: 根据用户名查找用户
+	 * @param username
+	 * @return
+	 * @return: Object
+	 */
+	User findByName(String username);
 
 }
