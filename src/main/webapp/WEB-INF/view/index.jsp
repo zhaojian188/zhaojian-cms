@@ -114,7 +114,7 @@
 								<img src="/resource/images/11.jpg" alt="First slide"  style="width:800px; height: 600px">
 							</div>
 							<div class="item">
-								<img src="/resource/images/22.jpg" alt="Second slide"  style="width:800px; height: 600px">
+								<img src="/resource/images/44.jpg" alt="Second slide"  style="width:800px; height: 600px">
 							</div>
 							<div class="item">
 								<img src="/resource/images/33.jpg" alt="Third slide"  style="width:800px; height: 600px">

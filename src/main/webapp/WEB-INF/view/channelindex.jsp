@@ -71,7 +71,7 @@
 	
 	<!-- 导航条 头部 -->
 	<nav class="navbar navbar-default">
-	  	<jsp:include page="./common/top.jsp">
+		<%@include  file="common/top.jsp" %>
 	</nav>
 
   <div class="container-fluid" >
@@ -108,7 +108,6 @@
 			</nav>		
 						
 			</div>
-					
 					<!-- 放文章的列表 -->
 					<div >
 						<c:forEach items="${articles.list}" var="article" >

@@ -44,7 +44,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: listByCat 
-	 * @Description: TODO
+	 * @Description: 根据频道或者分类获取文章
 	 * @param chnId
 	 * @param categoryId
 	 * @param page
@@ -55,7 +55,7 @@ public interface ArticleService {
 
 	/** 
 	 * @Title: getById 
-	 * @Description: TODO
+	 * @Description: 根据文章id 获取文章的内容
 	 * @param id
 	 * @return
 	 * @return: Article
@@ -80,6 +80,56 @@ public interface ArticleService {
 	 * @return: int
 	 */
 	int delete(int id);
+
+	/** 
+	 * @Title: getPageList 
+	 * @Description: 根据状态查询文章
+	 * @param status
+	 * @param page
+	 * @return
+	 * @return: PageInfo<Article>
+	 */
+	PageInfo<Article> getPageList(int status, Integer page);
+
+	/** 
+	 * @Title: getDetailById 
+	 * @Description: 获取文章详情  不考虑文章的状态
+	 * @param id
+	 * @return
+	 * @return: Article
+	 */
+	Article getDetailById(int id);
+
+	/** 
+	 * @Title: checkExist 
+	 * @Description: 判断文章是否存在
+	 * @param id
+	 * @return
+	 * @return: Article
+	 */
+	Article checkExist(int id);
+	
+	/** 
+	 * @Title: apply 
+	 * @Description: 审核文章
+	 * @param id
+	 * @param status
+	 * @return
+	 * @return: int
+	 */
+	int apply(int id, int status);
+
+	/** 
+	 * @Title: setHot 
+	 * @Description: 设置是否为热门
+	 * @param id
+	 * @param status
+	 * @return
+	 * @return: int
+	 */
+	int setHot(int id, int status);
+
+	
 
 
 }

@@ -37,7 +37,7 @@ public class Article implements Serializable{
 	private String picture          ;
 	// 频道
 	private Integer channelId       ;
-	private Channel channel       ;
+	private Channel channel         ;
 	
 	private Integer categoryId      ;
 	// 文章的分类

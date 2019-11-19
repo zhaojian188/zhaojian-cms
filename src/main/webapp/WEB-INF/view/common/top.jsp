@@ -51,7 +51,7 @@
 		            <li role="separator" class="divider"></li>
 		            <li><a href="/user/logout">退出登录</a></li>
 		          </ul>
-		        </li> 、
+		        </li> 
 	        </c:otherwise>
         </c:choose>
       </ul>

@@ -46,11 +46,31 @@
    	</c:forEach>
   </tbody>
 </table>
-<script>
+<ul class="pagination">
+    <li><a href="javascript:goPage(${pageInfo.prePage})">&laquo;</a></li>
+    <c:forEach begin="${pageInfo.pageNum-2 > 1 ? info.pageNum-2:1}" end="${pageInfo.pageNum+2 > info.pages ? info.pages:info.pageNum+2}" varStatus="index">    		
+    	<c:if test="${pageInfo.pageNum!=index.index}">
+    		<li><a href="javascript:goPage(${index.index})">${index.index}</a></li>
+    	</c:if>
+    	<c:if test="${pageInfo.pageNum==index.index}">
+    		<li><a href="javascript:void"><strong> ${index.index} </strong> </a></li>
+    	</c:if>
+    </c:forEach>
+    <li><a href="javascript:goPage(${pageInfo.nextPage})">&raquo;</a></li>
+</ul>
+
+<script type="text/javascript">
+
+	function goPage(page){
+		var url="/user/myarticles?page="+page ;
+		$("#content").load(url);
+	}
+
 	function delArticle(articleId){
 		$.post("/user/delArticle",{id:articleId},function(data){
 			if(data.result==1){
 				alert("删除成功");
+				$("#content").load("/user/myarticles?page=${pageInfo.pageNum}");
 			}else{
 				alert(data.errorMsg);
 			}

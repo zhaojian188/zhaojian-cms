@@ -23,4 +23,17 @@ public class CmsAssert {
 		if(!express)
 			throw new CmcException(msg);
 	}
+	/**
+	 * 
+	 * @Title: AssertTrueHtml 
+	 * @Description: TODO
+	 * @param express
+	 * @param msg
+	 * @return: void
+	 */
+	public static void AssertTrueHtml(boolean express, String msg) {
+		// TODO Auto-generated method stub
+		if(!express)
+			throw new CmcExceptionHtml(msg);
+	}
 }

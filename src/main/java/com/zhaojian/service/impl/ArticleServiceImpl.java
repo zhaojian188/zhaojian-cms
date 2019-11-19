@@ -114,4 +114,70 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleMapper.delete(id);
 	}
 
+	/* (non Javadoc) 
+	 * @Title: getPageList
+	 * @Description: TODO
+	 * @param status
+	 * @param page
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#getPageList(int, java.lang.Integer) 
+	 */
+	@Override
+	public PageInfo<Article> getPageList(int status, Integer page) {
+		PageHelper.startPage(page, ConstantClass.PAGE_SIZE);
+		return new PageInfo<Article>(articleMapper.listByStatus(status));
+	}
+	
+	/* (non Javadoc) 
+	 * @Title: getDetailById
+	 * @Description: TODO
+	 * @param id
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#getDetailById(int) 
+	 */
+	@Override
+	public Article getDetailById(int id) {
+		return  articleMapper.getDetailById(id);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: checkExist
+	 * @Description: TODO
+	 * @param id
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#checkExist(int) 
+	 */
+	@Override
+	public Article checkExist(int id) {
+		return  articleMapper.checkExist(id);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: apply
+	 * @Description: TODO
+	 * @param id
+	 * @param status
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#apply(int, int) 
+	 */
+	@Override
+	public int apply(int id, int status) {
+		
+		return articleMapper.apply(id,status);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: setHot
+	 * @Description: TODO
+	 * @param id
+	 * @param status
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#setHot(int, int) 
+	 */
+	@Override
+	public int setHot(int id, int status) {
+		
+		return articleMapper.setHot(id,status);
+	}
+
 }

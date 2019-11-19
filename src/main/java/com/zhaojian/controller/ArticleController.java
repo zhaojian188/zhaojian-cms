@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zhaojian.beans.Article;
+import com.zhaojian.common.CmsAssert;
 import com.zhaojian.service.ArticleService;
 
 /** 
@@ -38,6 +39,7 @@ public class ArticleController {
 	public String showDetail(HttpServletRequest request,Integer id) {
 		
 		Article article = articleService.getById(id); 
+		CmsAssert.AssertTrueHtml(article!=null, "文章不存在");
 		request.setAttribute("article",article);
 		return "article/detail";
 		

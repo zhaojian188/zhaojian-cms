@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link href="/resource/bootstrap/css/bootstrap.css" rel="stylesheet">  
- <script type="text/javascript" src="/resource/js/jquery-1.8.3.js"></script> 
+ <script type="text/javascript" src="/resource/js/jquery-3.2.1.js"></script> 
  <script type="text/javascript" src="/resource/bootstrap/js/bootstrap.js"></script>
 
 <!-- <link rel="stylesheet" href="/resource/css/index3.css"> -->
