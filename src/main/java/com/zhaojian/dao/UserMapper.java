@@ -40,14 +40,7 @@ public interface UserMapper {
 	@Select("SELECT * FROM cms_user WHERE username = #{value} limit 1")
 	User findByUserName(String username);
 
-
-	/** 
-	 * @Title: add 
-	 * @Description: 注册
-	 * @param user
-	 * @return
-	 * @return: int
-	 */
+	//用户/管理注册
 	int add(User user);
 
 }

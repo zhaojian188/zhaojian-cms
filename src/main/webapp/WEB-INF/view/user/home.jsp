@@ -12,11 +12,12 @@
 
  </head>
  
-<body style="background:url(/resource/images/back2.jpg) center no-repeat; ">
+<body style="background:url(/pic/back2.jpg) center no-repeat; ">
 <!-- 导航条 -->
 <nav class="navbar navbar-default">
 	<%@include  file="../common/top.jsp" %>
 </nav>
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-3" >
@@ -29,11 +30,17 @@
 			</ul>
 		</div>
 		<div class="col-md-9" id="content">
+		
+				<div id="kindEditor" style="display: none">
+				   <!-- 引入kindEditor的样式 -->
+				  <jsp:include page="/resource/kindeditor/jsp/demo.jsp"></jsp:include>
+              </div>
+              
 			
 		</div>
 	</div>
-</div>
  
+</div>
 <script type="text/javascript">
 	$(".homemenu li").click(function(){
 		var url  = $(this).attr("data");
@@ -45,6 +52,7 @@
 	$("#content").load(url);
 	
 </script>
+
 
 </body>
 </html>

@@ -13,11 +13,6 @@
 <!-- <link rel="stylesheet" href="/resource/css/index3.css"> -->
 <title>CMS后台管理平台</title>
 
-<script type="text/javascript">
-	function showFuction(url){
-		$("#content").load(url)
-	}
-</script>
 </head>
 <body>	
 
@@ -74,7 +69,11 @@ role="navigation">
 	<div align="center"> <font color="blue" size="5"> ----八维大数据学院1707D--- </font> </div>
 </nav>
 
-
+<script type="text/javascript">
+	function showFuction(url){
+		$("#content").load(url)
+	}
+</script>
 
 </body>
 </html>

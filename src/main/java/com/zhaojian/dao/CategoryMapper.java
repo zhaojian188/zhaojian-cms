@@ -25,7 +25,7 @@ public interface CategoryMapper {
 
 	/** 
 	 * @Title: listByChannelId 
-	 * @Description: TODO
+	 * @Description: 获取分类
 	 * @param chnId
 	 * @return
 	 * @return: List<Category>

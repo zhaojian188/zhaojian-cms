@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <th>id</th>
-      <th width="50%">标题</th>
+      <th width="40%">标题</th>
       <th>频道</th>
       <th>分类</th>
       <th>发布日期</th>
@@ -25,13 +25,13 @@
 	       <td><fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd"/></td>
 	       <td>
 	       <c:choose>
-	       	<c:when test="article.status==0">
+	       	<c:when test="${article.status==0}">
 	       		待审核
 	       	</c:when>
-	       	<c:when test="article.status==1">
+	       	<c:when test="${article.status==1}">
 	       		审核通过
 	       	</c:when>
-	       	<c:when test="article.status==2">
+	       	<c:when test="${article.status==2}">
 	       		审核被拒
 	       	</c:when>
 	       	<c:otherwise>
@@ -40,13 +40,14 @@
 	       </c:choose>
 	       </td>
 	      <td>
-	      	<input type="button" onclick="" value="修改" class="btn-info"/>
+	      	<input type="button" onclick="modifyArticle(${article.id})" value="修改" class="btn-info"/>
 	      	<input type="button" onclick="delArticle(${article.id})" value="删除"  class="btn-danger"/>
 	      </td></tr>
    	</c:forEach>
   </tbody>
 </table>
-<ul class="pagination">
+<div class="row" style="text-align: center;padding-top:1px">
+<ul class="pagination" style="text-align:center">
     <li><a href="javascript:goPage(${pageInfo.prePage})">&laquo;</a></li>
     <c:forEach begin="${pageInfo.pageNum-2 > 1 ? info.pageNum-2:1}" end="${pageInfo.pageNum+2 > info.pages ? info.pages:info.pageNum+2}" varStatus="index">    		
     	<c:if test="${pageInfo.pageNum!=index.index}">
@@ -55,11 +56,18 @@
     	<c:if test="${pageInfo.pageNum==index.index}">
     		<li><a href="javascript:void"><strong> ${index.index} </strong> </a></li>
     	</c:if>
+    	
     </c:forEach>
     <li><a href="javascript:goPage(${pageInfo.nextPage})">&raquo;</a></li>
 </ul>
+</div>
 
 <script type="text/javascript">
+
+	function modifyArticle(articleId){
+		var url="/user/updateArticle?id="+articleId;
+		$("#content").load(url);
+	}
 
 	function goPage(page){
 		var url="/user/myarticles?page="+page ;
@@ -67,13 +75,17 @@
 	}
 
 	function delArticle(articleId){
-		$.post("/user/delArticle",{id:articleId},function(data){
-			if(data.result==1){
-				alert("删除成功");
-				$("#content").load("/user/myarticles?page=${pageInfo.pageNum}");
-			}else{
-				alert(data.errorMsg);
-			}
-		},"json")
+		$.post(
+				"/user/delArticle",
+				{id:articleId},function(data){
+				if(data.result==1){
+					alert("删除成功");
+					$("#content").load("/user/myarticles?page=${pageInfo.pageNum}");
+				}else{
+					alert(data.errorMsg);
+				}
+			},
+			"json"
+			)
 	}
 </script>

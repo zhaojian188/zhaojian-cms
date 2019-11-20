@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
+
+
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="articleDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" style="width:1000px;height:1000px" >
@@ -116,20 +117,18 @@
 	*/
 	function apply(status) {
 		
-		$.post(
-				"/admin/applyArticle",
-				{id:globalArticleId,status:status},
+		$.post("/admin/applyArticle",{id:globalArticleId,status:status},
 				function(data){
-					if(data.result==1){
-						alert("审核操作成功");
-						$('#articleDetailModal').modal('hide');
-						// 刷新列表数据
-						//$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
-					}else{
-						alert(data.errorMsg);
-					}
-		},
-		"json");
+				if(data.result==1){
+					alert("审核操作成功");
+					$('#articleDetailModal').modal('hide');
+					// 刷新列表数据
+					//$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+				}else{
+					alert(data.errorMsg);
+				}
+		}
+		,"json");
 	}
 	
 	/**
@@ -137,9 +136,7 @@
 	*/
 	function setHot(status) {
 		
-		$.post(
-				"/admin/setArticleHot",
-				{id:globalArticleId,status:status},
+		$.post("/admin/setArticleHot",{id:globalArticleId,status:status},
 				function(data){
 				if(data.result==1){
 					alert("审核操作成功");
@@ -181,18 +178,14 @@
 	}
 
 	function delArticle(articleId){
-		$.post(
-				"/user/delArticle",
-				{id:articleId},
-				function(data){
-					if(data.result==1){
-						alert("删除成功");
-						$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
-					}else{
-						alert(data.errorMsg);
-					}
-				},
-			"json")
+		$.post("/user/delArticle",{id:articleId},function(data){
+			if(data.result==1){
+				alert("删除成功");
+				$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+			}else{
+				alert(data.errorMsg);
+			}
+		},"json")
 	}
 	
 	$('#articleDetailModal').on('hidden.bs.modal', function () {
@@ -203,3 +196,5 @@
 	})
 		
 </script>
+
+    

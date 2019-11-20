@@ -180,4 +180,29 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleMapper.setHot(id,status);
 	}
 
+	/* (non Javadoc) 
+	 * @Title: add
+	 * @Description: 添加文章
+	 * @param article
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#add(com.zhaojian.beans.Article) 
+	 */
+	@Override
+	public int add(Article article) {
+		return articleMapper.add(article);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: update
+	 * @Description: TODO
+	 * @param article
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#update(com.zhaojian.beans.Article) 
+	 */
+	@Override
+	public int update(Article article) {
+		
+		return articleMapper.update(article);
+	}
+
 }

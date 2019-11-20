@@ -129,6 +129,24 @@ public interface ArticleService {
 	 */
 	int setHot(int id, int status);
 
+	/** 
+	 * @Title: add 
+	 * @Description: 添加文章
+	 * @param article
+	 * @return
+	 * @return: int
+	 */
+	int add(Article article);
+
+	/** 
+	 * @Title: update 
+	 * @Description: TODO
+	 * @param article
+	 * @return
+	 * @return: int
+	 */
+	int update(Article article);
+
 	
 
 

@@ -13,6 +13,7 @@ package com.zhaojian.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -143,7 +144,38 @@ public interface ArticleMapper {
 	 */
 	@Update(" UPDATE cms_article SET  hot=#{status} "
 			+ " WHERE id=#{id} ")
-	int setHot(int id, int status);
+	int setHot(@Param("id")int id, @Param("status")int status);
+
+
+	/** 
+	 * @Title: add 
+	 * @Description: 添加文章
+	 * @param article
+	 * @return
+	 * @return: int
+	 */
+	@Insert("INSERT INTO cms_article("
+			+ " title,content,picture,channel_id,category_id,"
+			+ " user_id,hits,hot,status,deleted,"
+			+ " created,updated,commentCnt,articleType) "
+			+ " values("
+			+ " #{title},#{content},#{picture},#{channelId},#{categoryId},"
+			+ "#{userId},#{hits},#{hot},#{status},#{deleted},"
+			+ "now(),now(),#{commentCnt},#{articleType})")
+	int add(Article article);
+
+
+	/** 
+	 * @Title: update 
+	 * @Description: 修改文章
+	 * @param article
+	 * @return
+	 * @return: int
+	 */
+	@Update("UPDATE cms_article SET title=#{title},content=#{content},"
+			+ "picture=#{picture},channel_id=#{channelId},"
+			+ "category_id=#{categoryId},status=0,updated=now() WHERE id=#{id}")
+	int update(Article article);
 
 	
 

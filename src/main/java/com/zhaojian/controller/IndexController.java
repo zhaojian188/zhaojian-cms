@@ -42,35 +42,12 @@ public class IndexController {
 	@Autowired
 	ChannelService channelService;
 	
+	@Autowired
+	CategoryService categoryService;
 	
 	@Autowired
 	ArticleService articleService;
-	
-	@Autowired
-	CategoryService categoryService;
 
-	/**
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = { "index", "/" })
-	public String index(HttpServletRequest request, @RequestParam(defaultValue = "1") int page) {
-
-		//获取所有的频道
-		List<Channel> channels = channelService.list();
-		request.setAttribute("channels", channels);
-		
-		PageInfo<Article> hotList = articleService.hotList(page);
-		
-		List<Article> newArticles = articleService.getNewArticles(5);
-		
-		request.setAttribute("hotList", hotList);
-		request.setAttribute("newArticles", newArticles);
-		
-		
-		
-		return "index";
-	}
 	
 	/**
 	 * 
@@ -106,6 +83,30 @@ public class IndexController {
 		request.setAttribute("articles", articles);
 		//跳转到用户页面
 		return "channelindex";
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = { "index", "/" })
+	public String index(HttpServletRequest request, @RequestParam(defaultValue = "1") int page) {
+
+		//获取所有的频道
+		List<Channel> channels = channelService.list();
+		request.setAttribute("channels", channels);
+		
+		PageInfo<Article> hotList = articleService.hotList(page);
+		
+		List<Article> newArticles = articleService.getNewArticles(5);
+		
+		request.setAttribute("hotList", hotList);
+		request.setAttribute("newArticles", newArticles);
+		
+		
+		
+		return "index";
 	}
 			
 }

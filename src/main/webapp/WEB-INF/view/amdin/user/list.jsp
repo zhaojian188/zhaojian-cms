@@ -4,21 +4,21 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 
 <script type="text/javascript">
-<!--
-	
-//-->
+
 function updateStatus(userId,status){
-	$.post("/admin/lockuser",
+	$.post(
+			"/admin/lockuser",
 			{userId:userId,status:status},
 			function(data){
 				if(data.result==1){
 					alert("恭喜，处理成功！");
 					$("#content").load("/admin/users?name=${name}&page=" +${info.pageNum});
-				}else{
+				}else {
 					alert(data.errorMsg);
 				}
+					
 			},
-		"json"
+			"json"
 	)	
 }
 
@@ -97,6 +97,8 @@ function search(){
 	        		<input type="button" class="btn btn-info"  onclick="updateStatus(${user.id},1)" value="封禁"/>
 	        	</c:if>
 			</td>
+	        <td></td>
+	        <td></td>
 	      </tr>
       </c:forEach>
   </table>
@@ -122,4 +124,3 @@ function search(){
 		$("#content").load(url);
 	}
 </script>
-
