@@ -7,11 +7,10 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" href="#">
-        <img alt="Brand" src="/resource/images/logo.png">
+        <img alt="Brand" src="/resource/images/logo.png" >
       </a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav"  >
 		<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
@@ -33,14 +32,16 @@
       </form>
       
       <ul class="nav navbar-nav navbar-right">
-       <li><a href="#"><img width="30px" height="30px" src="/resource/images/aa.gif"/> </a></li>
+      
         <c:choose>
 	        <c:when  test="${sessionScope.SESSION_USER_KEY == null}">
-	        	<li><a href="/user/register">注册</a></li>
-	        	<li><a href="/user/login">登录</a></li>
+	        
+	        	<li><a href="/user/register"> <span class="glyphicon glyphicon-question-sign" style="color: red">注册</span></a></li>
+	        	<li><a href="/user/login"><span class="glyphicon glyphicon-send" style="color: green">登录</span></a></li>
 	        </c:when>
 	        <c:otherwise>
 		        <li class="dropdown">
+		         <li><a href="#"><img width="30px" height="30px" src="/resource/images/aa.gif"/></a></li>
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
 		          	${sessionScope.SESSION_USER_KEY.username}
 		           <span class="caret"></span></a>

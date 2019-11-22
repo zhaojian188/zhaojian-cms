@@ -12,15 +12,15 @@
 
  </head>
  
-<body style="background:url(/pic/back2.jpg) center no-repeat; ">
+<body style="background:url(/pic/a3.jpg)  ">
 <!-- 导航条 -->
 <nav class="navbar navbar-default">
 	<%@include  file="../common/top.jsp" %>
 </nav>
 
 <div class="container">
-	<div class="row">
-		<div class="col-md-3" >
+	<div class="row" >
+		<div class="col-md-3">
 			<ul class="list-group homemenu">
 			 <li class="list-group-item list-group-item-success" data="/user/myarticles">我的文章</li>
 			 <li class="list-group-item list-group-item-info" data="/user/postArticle">发布文章</li>
@@ -29,14 +29,13 @@
 			 <li class="list-group-item list-group-item-info">个人设置</li>
 			</ul>
 		</div>
-		<div class="col-md-9" id="content">
 		
+		<div class="col-md-9" id="content">
 				<div id="kindEditor" style="display: none">
 				   <!-- 引入kindEditor的样式 -->
 				  <jsp:include page="/resource/kindeditor/jsp/demo.jsp"></jsp:include>
               </div>
               
-			
 		</div>
 	</div>
  

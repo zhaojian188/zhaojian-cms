@@ -40,6 +40,7 @@
 	       </c:choose>
 	       </td>
 	      <td>
+	      	<!-- 修改文章 -->
 	      	<input type="button" onclick="modifyArticle(${article.id})" value="修改" class="btn-info"/>
 	      	<input type="button" onclick="delArticle(${article.id})" value="删除"  class="btn-danger"/>
 	      </td></tr>

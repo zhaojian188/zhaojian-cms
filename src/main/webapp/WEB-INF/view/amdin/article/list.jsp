@@ -6,7 +6,7 @@
 
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="articleDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" style="width:1000px;height:1000px" >
+	<div class="modal-dialog" style="width:800px;height:1000px" >
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -16,7 +16,7 @@
 					审核文章
 				</h4>
 			</div>
-			<div class="modal-body"  style="height:200px;overflow-x:scroll;overflow-y:scroll">
+			<div class="modal-body"  style="height:500px;overflow-x:scroll;overflow-y:scroll">
 				<h3 id="articleTitle"></h3>
 				<br/>
 				<div id="articleInfo"></div>
@@ -84,10 +84,13 @@
 	      <td>
 	      	<input type="button" onclick="toApply(${article.id})" value="审核" class="btn-info"/>
 	      	<input type="button" onclick="delArticle(${article.id})" value="删除"  class="btn-danger"/>
-	      </td></tr>
+	      </td>
+	    </tr>
+	   
    	</c:forEach>
   </tbody>
 </table>
+
 <ul class="pagination">
     <li><a href="javascript:goPage(${pageInfo.prePage})">&laquo;</a></li>
     <c:forEach begin="${pageInfo.pageNum-2 > 1 ? info.pageNum-2:1}" end="${pageInfo.pageNum+2 > info.pages ? info.pages:info.pageNum+2}" varStatus="index">    		
@@ -187,14 +190,15 @@
 			}
 		},"json")
 	}
-	
+	//审核完成后，刷新到列表页面
 	$('#articleDetailModal').on('hidden.bs.modal', function () {
 		  // 执行一些动作...
-		//alert("关闭") 
-		//$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+		$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
 		  
 	})
 		
 </script>
+
+
 
     

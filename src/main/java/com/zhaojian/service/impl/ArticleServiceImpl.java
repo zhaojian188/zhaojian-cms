@@ -44,6 +44,7 @@ public class ArticleServiceImpl implements ArticleService{
 	 */
 	@Override
 	public PageInfo<Article> hotList(int page) {
+		PageHelper.startPage(page, ConstantClass.PAGE_SIZE);
 		return new PageInfo<Article>(articleMapper.hostList());
 	}
 

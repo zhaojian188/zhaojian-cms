@@ -20,65 +20,29 @@
 	.menu li:hover{
 		background:gray;
 	}
+	
+	.bg {
+        background:url(/pic/back1.jpg) no-repeat center;
+        /* background-size:contain; */   /*图片自适应*/
+      	background-size:cover;   /*让图片覆盖满整个div*/
+       
+}
 </style>
 </head>
-<body>
+<body class="row bg" style="width:100%; height: 100%">
 
-<!-- 导航条 -->
-<!-- <nav class="navbar navbar-default" style="height:80px">
-  	
-  	logo
-  	<div class="navbar-header">
-      <a class="navbar-brand" href="#">
-        <img alt="Brand" src="/resource/images/logo.png">
-      </a>
-    </div>
-    
-	 中间的搜索框
-     <form class="navbar-form"  style="float:none; margin-top:25px; text-align:center;" >
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-    
-    搜索框和右侧登录信息
-    <div class="collapse navbar-collapse" style="float:none;text-align:right;margin-bottom:20px"  id="bs-example-navbar-collapse-1" >
-      <ul class="nav navbar-nav">
-        
-      </ul>
-      头像信息
-      <ul class="nav navbar-nav navbar-right" >
-        <li><a href="#"><img width="40px" height="40px" src="/resource/images/aa.gif"/> </a></li>
-        
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          		张三 <span class="caret"></span></a>
-          <ul class="dropdown-menu ">
-            <li><a href="#">个人中心</a></li>
-            <li><a href="#">个人设置</a></li>
-            <li><a href="#">修改头像</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">退出登录</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>/.navbar-collapse
-
-	</nav> -->
-	
 	<!-- 导航条 头部 -->
 	<nav class="navbar navbar-default">
 		<%@include  file="common/top.jsp" %>
 	</nav>
 	
-	<div class="progress">
+	<!-- <div class="progress">
 		<div class="progress-bar progress-bar-striped active"
 			role="progressbar" aria-valuenow="45" aria-valuemin="0"
 			aria-valuemax="100" style="width: 70%">
 			<span class="sr-only">45% Complete</span>
 		</div>
-	</div>
+	</div> -->
 
 <div class="container-fluid" >
 	<div class="container" style="minheight:200px" >
@@ -107,17 +71,25 @@
 							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 							<li data-target="#myCarousel" data-slide-to="1"></li>
 							<li data-target="#myCarousel" data-slide-to="2"></li>
+							<li data-target="#myCarousel" data-slide-to="3"></li>
+							<li data-target="#myCarousel" data-slide-to="4"></li>
 						</ol>   
 						<!-- 轮播（Carousel）项目 -->
-						<div class="carousel-inner">
+						<div class="carousel-inner" style="border-radius:25px;">
 							<div class="item active">
-								<img src="/resource/images/11.jpg" alt="First slide"  style="width:800px; height: 600px">
+								<img src="/resource/images/1.jpg"  class="img-circle"  style=" align:center;width:800px; height:400px;" alt="First slide">
 							</div>
 							<div class="item">
-								<img src="/resource/images/44.jpg" alt="Second slide"  style="width:800px; height: 600px">
+								<img src="/resource/images/2.jpg"  class="img-rounded"  style=" border-radius:24px; align:center;width:800px; height:400px;" alt="Second slide">
 							</div>
 							<div class="item">
-								<img src="/resource/images/33.jpg" alt="Third slide"  style="width:800px; height: 600px">
+								<img src="/resource/images/3.jpg"  class="img-rounded"  style=" align:center;width:800px; height:400px;" alt="Third slide">
+							</div>
+							<div class="item">
+								<img src="/resource/images/4.jpg"  class="img-rounded"  style=" align:center;width:800px; height:400px;" alt="Four slide">
+							</div>
+							<div class="item">
+								<img src="/resource/images/5.jpg"  class="img-circle"  style=" align:center;width:800px; height:400px;" alt="Five slide">
 							</div>
 						</div>
 						<!-- 轮播（Carousel）导航 -->
@@ -134,12 +106,12 @@
 					<!-- 放文章的列表 -->
 					<div>
 						<c:forEach items="${hotList.list }" var="article">
-						<div class=row>
-							 <hr align="left" style="width: 100%">
-							<div class="col-md-2"><img height="80px" width="80px" src="/pic/${article.picture}"></div>
+						<div class=row style="padding-bottom:1px">
+							 <hr width="88%" style="background-color:#D2691E;border:none;height:1px">
+							<div class="col-md-2"style="text-align:right"><img height="80px" width="80px" src="/pic/${article.picture}"></div>
 							<div class="col-md-10">
 								<a href="javascript:showArticle(${article.id })">${article.title }</a>
-								<br>
+								<br><br>
 								频道:<a>${article.channel.name }</a> &nbsp;&nbsp;
 								分类:<a>${article.category.name }</a>
 								<br>
@@ -149,7 +121,8 @@
 						</div>
 						</c:forEach>
 						
-						<div class="row">
+						<div class="row" style="text-align: center">
+							<hr width="88%" style="background-color:#D2691E;border:none;height:1px">
 							<ul class="pagination">
 								    <li><a href="/index?page=${hotList.prePage}">&laquo;</a></li>
 								    <c:forEach begin="${hotList.pageNum-2 > 1 ? hotList.pageNum-2:1}" 
@@ -174,10 +147,12 @@
 			<div class="col-md-2" style="minheight:200px" >
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">面板标题</h3>
+						<h3 class="panel-title">公告</h3>
 					</div>
 					<div class="panel-body">
-						这是一个基本的面板
+						1.<a href="#">本网站禁止发布不良信息</a>
+						<br/>
+						2.<a href="#">今日下午20:00下红包雨</a>
 					</div>
 				</div>
 				
@@ -187,12 +162,11 @@
 					</div>
 					<div class="panel-body">
 						<c:forEach items="${newArticles}" var="article" varStatus="index">
-							${index.index+1} . <a>${article.title}</a>
+							${index.index+1} . <a href="javascript:showArticle(${article.id })">${article.title}</a>
 							<br/>
 						</c:forEach>
 					</div>
-			
-			</div>
+			    </div>
 		</div>
 		
 	</div>
@@ -204,13 +178,33 @@
 
 
 <!-- 底部 -->
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-  </div>
-</nav>
+<nav class="navbar navbar-default" style="background:#000099">
+ <div class="container-fluid" style="text-align:center">
+ 	<div class="row" style="margin-top:13px">
+ 	    <div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">搜狐</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">今日头条</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">网易</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">新浪中国</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">百度</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">饿了么</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">淘宝</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">大众点评</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">豆瓣电影</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">风火轮</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+ 	</div>
+ 	<div class="row" >
+ 		<div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">饿了么</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">淘宝</a></div>
+ 		<div class="col-md-1"><a href="sohu.com" class="fl">大众点评</a></div>
+ 		
+ 	</div>
+ </div>
 
-<script type="text/javascript" src="/resource/js/cms_index.js">
+<script type="text/javascript" src="/resource/js/cms_index.js"></script>
 
-</script>
+
 </body>
 </html>

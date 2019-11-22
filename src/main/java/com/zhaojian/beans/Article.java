@@ -66,6 +66,7 @@ public class Article implements Serializable{
 	private int commentCnt       ;
 	//文章类型
 	private int articleType      ;
+	
 	/**
 	 * @return the id
 	 */

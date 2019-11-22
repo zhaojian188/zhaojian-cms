@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+
 <%
 	request.setCharacterEncoding("UTF-8");
 	String htmlData = request.getParameter("content1") != null ? request.getParameter("content1") : "";
@@ -96,13 +97,16 @@
 	    // 获取修改后的频道值
 		var channelId =  $("#channel").val();
 	   // 根据频道的数据获取相应的分裂
-	   $.post("/article/getCategoryByChannel",{chnId:channelId},function(data){
+	   $.post(
+		   "/article/getCategoryByChannel",
+		   {chnId:channelId},
+		  function(data){
 		   //data 包含了分类的信息
 		   if(data.result==1){
 			   // 清空数据
 			   $("#category").empty();
 			   // 追加
-			   $("#category").append("<option value='0'>请选择</option>")
+			   $("#category").append("<option value='0'>请选择</option>");
 			   for ( var index in data.data) {
 				   if(data.data[index].id == ${article.categoryId} ){
 				   	  $("#category").append("<option value='"+ data.data[index].id +"' selected>"+data.data[index].name+"</option>")
@@ -114,7 +118,8 @@
 			   // 获取数据失败
 			   alert(data.errorMsg);
 		   }
-	   },"json"
+	   	},
+	   "json"
 	   )
 	}
  
@@ -143,10 +148,11 @@ function publish(){
 			url:"/user/updateArticle",
 			success:function(obj){
 				if(obj){
-					alert("发布成功!")
+					alert("修改成功!")
 					$('#center').load("/user/myarticlelist");
+					location="/user/home";
 				}else{
-					alert("发布失败")
+					alert("修改失败")
 				}
 				
 			}
@@ -154,9 +160,6 @@ function publish(){
 		})
 		
 }
-
-
-
 
 </script>
 <%!

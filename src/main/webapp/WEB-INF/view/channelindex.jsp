@@ -20,9 +20,13 @@
 	.menu li:hover{
 		background:gray;
 	}
+	.bg {
+        background:url(/pic/aaa.jpg) no-repeat center;
+        background-size:contain;   /*图片自适应*/
+      	/* background-size:cover; */   /*让图片覆盖满整个div*/
 </style>
 </head>
-<body>
+<body  class="row bg" style="width:100%; height: 100%">
 	<!-- 导航条 头部 -->
 	<nav class="navbar navbar-default">
 		<%@include  file="common/top.jsp" %>
@@ -45,21 +49,18 @@
 			<!-- 中间的内容 -->
 			<div class="col-md-8" style="background:white;minheight:200px" >
 			<div>
-			
 			<nav class="navbar navbar-default" role="navigation">
-			    <div class="container-fluid">
-			    <div>
-			        <ul class="nav navbar-nav">
-			        	<li <c:if test="${categoryId==0}"> class="active" </c:if> ><a href="javascript:gotoCat(0)" >全部</a></li>
-			        	<c:forEach items="${categories}" var="cat">
-			            	<li <c:if test="${cat.id==categoryId}"> class="active" </c:if> >
-			            	<a href="javascript:gotoCat(${cat.id})" >${cat.name}</a>
-			            	</li>
-			            </c:forEach>
-			        </ul>
-			    </div>
-			    </div>
-			</nav>		
+					<div class="container-fluid">
+					<div>
+						<ul class="nav navbar-nav">
+							<li <c:if test="${categoryId==0}"> class="active" </c:if> ><a href="javascript:gotoCat(0)" >全部</a></li>
+							<c:forEach items="${categories}" var="cat">
+								<li <c:if test="${cat.id==categoryId}"> class="active" </c:if> ><a href="javascript:gotoCat(${cat.id})" >${cat.name}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+					</div>
+				</nav>	
 						
 			</div>
 					<!-- 放文章的列表 -->
@@ -80,6 +81,7 @@
 							
 						</div>
 						</c:forEach>
+						
 						<div class="row">
 							<ul class="pagination">
 								    <li><a href="/channel?chnId=${chnId}&categoryId=${categoryId}&page=${articles.prePage}">&laquo;</a></li>
@@ -115,6 +117,7 @@
 					<div class="panel-heading">
 						<h3 class="panel-title">最新文章</h3>
 					</div>
+					
 					<div class="panel-body">
 						<c:forEach items="${newArticles}" var="article" varStatus="index">
 							${index.index+1} . <a>${article.title}</a>
@@ -133,11 +136,10 @@
 
 
 <!-- 底部 -->
-<nav class="navbar navbar-default">
+<!-- <nav class="navbar navbar-default">
   <div class="container-fluid">
   </div>
-</nav>
-
+</nav> -->
 <script type="text/javascript">
 	function gotoCat(catId){
 		location.href="/channel?chnId=${chnId}&categoryId="+catId;
