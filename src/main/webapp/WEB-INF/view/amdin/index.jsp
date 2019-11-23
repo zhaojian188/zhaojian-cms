@@ -44,9 +44,11 @@
 	<div class="col-md-2">
 		<div style="margin-left:20px ">
 			<ul class="nav nav-pills nav-stacked">
-			  <li class="active"><a href="javascript:showFuction('/admin/articles')">文章列表</a></li>
-			  <li><a href="javascript:showFuction('/user/hello')">测试</a></li>
-			  <li><a href="javascript:showFuction('/user/postArticle')">发布公告</a></li>
+			  <li class="active"><a href="javascript:showFuction('/admin/articles')">文章管理</a></li>
+			   <li><a href="javascript:showFuction('/admin/users')">用户管理</a></li>
+			  <li><a href="javascript:showFuction('/user/postArticle')">公告管理</a></li>
+			  <li><a href="javascript:showFuction('/link/list')">友情链接管理</a></li>
+			  
 			  <li>投票管理
 			  	<ul class="nav nav-pills nav-stacked">
 			  		<li><a href="#">投票列表</a></li>
@@ -54,11 +56,12 @@
 			  	</ul>
 			  </li>
 			  <li class="divider"></li>
-			  <li><a href="javascript:showFuction('/admin/users')">用户管理</a></li>
+			 <li><a href="javascript:showFuction('/user/hello')">测试</a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="col-md-10"  style=" min-height:500px; border-left: solid">
+		<!-- 放每个功能右面的展示列表的盒子 -->
 		<div id="content">
 			
 		</div>

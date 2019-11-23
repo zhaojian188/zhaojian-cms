@@ -206,4 +206,31 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleMapper.update(article);
 	}
 
+	/* (non Javadoc) 
+	 * @Title: faverite
+	 * @Description: TODO
+	 * @param userId
+	 * @param articleId
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#faverite(java.lang.Integer, int) 
+	 */
+	@Override
+	public int faverite(Integer userId, int articleId) {
+		return articleMapper.favorite(userId,articleId);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: getImgArticles
+	 * @Description: TODO
+	 * @param i
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#getImgArticles(int) 
+	 */
+	@Override
+	public List<Article> getImgArticles(int num) {
+		return articleMapper.getImgArticles(num);
+	}
+
+	
+
 }

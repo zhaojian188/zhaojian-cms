@@ -145,6 +145,20 @@
 			<!-- 中间的内容结束 -->
 			
 			<div class="col-md-2" style="minheight:200px" >
+			
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">图片文章</h3>
+					</div>
+					<div class="panel-body">
+						<c:forEach items="${imgArticles}" var="article" varStatus="index"> 
+							<a href="javascript:showArticle(${article.id})">${index.index}. ${article.title}</a>
+							<br/>
+						</c:forEach>
+					</div>
+				</div>
+			
+			
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">公告</h3>
@@ -181,27 +195,13 @@
 <nav class="navbar navbar-default" style="background:#000099">
  <div class="container-fluid" style="text-align:center">
  	<div class="row" style="margin-top:13px">
- 	    <div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">搜狐</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">今日头条</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">网易</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">新浪中国</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">百度</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">饿了么</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">淘宝</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">大众点评</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">豆瓣电影</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">风火轮</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
+ 			<c:forEach items="${linkList}" var ="link">
+ 				<div class="col-md-1"><a href="${link.url}" class="fl"> ${link.name}</a></div>
+ 			</c:forEach>
  	</div>
- 	<div class="row" >
- 		<div class="col-md-1"><a href="sohu.com" class="fl"></a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">饿了么</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">淘宝</a></div>
- 		<div class="col-md-1"><a href="sohu.com" class="fl">大众点评</a></div>
- 		
- 	</div>
+ 	
  </div>
+ </nav>
 
 <script type="text/javascript" src="/resource/js/cms_index.js"></script>
 

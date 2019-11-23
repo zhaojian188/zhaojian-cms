@@ -147,7 +147,24 @@ public interface ArticleService {
 	 */
 	int update(Article article);
 
+	/** 
+	 * @Title: faverite 
+	 * @Description: 收藏文章
+	 * @param id
+	 * @param id2
+	 * @return
+	 * @return: int
+	 */
+	int faverite(Integer userId ,int articleId);
 	
-
+	/**
+	 * 获取最新的10篇图片文章
+	 * @param i 个数
+	 * @return
+	 */
+	List<Article> getImgArticles(int i);
 
 }
+
+	
+

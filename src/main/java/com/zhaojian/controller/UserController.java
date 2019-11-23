@@ -14,6 +14,7 @@ package com.zhaojian.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +34,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Channel;
+import com.zhaojian.beans.Image;
+import com.zhaojian.beans.TypeEnum;
 import com.zhaojian.beans.User;
 import com.zhaojian.common.CmsAssert;
 import com.zhaojian.common.ConstantClass;
@@ -68,6 +72,26 @@ public class UserController {
 	ChannelService channelService;
 	
 	private SimpleDateFormat dateFormat;
+	
+	
+	/**
+	 * 
+	 * @Title: tet 
+	 * @Description: 文章收藏功能
+	 * @param request
+	 * @return
+	 * @return: String
+	 */
+	@ResponseBody
+	@RequestMapping("favorite")
+	public MsgResult favorite(HttpServletRequest request,int id) {
+		CmsAssert.AssertTrue(id>0, "id不能为负值");
+		User loginUser = (User) request.getSession().getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrue(loginUser!=null, "您未登录，请先登录账户");
+		int result = articleService.faverite(loginUser.getId(),id);
+		CmsAssert.AssertTrue(result>0, "收藏成功");
+		return new MsgResult(1, "恭喜您，收藏成功", null);
+	}
 	
 	
 	//  httppxxxx://user/hello
@@ -356,6 +380,60 @@ public class UserController {
 		int result = articleService.delete(id);
 		CmsAssert.AssertTrue(result>0,"文章删除失败");
 		return new MsgResult(1,"删除成功",null);
+		
+	}
+	
+	@GetMapping("postImg")
+	public String postImg(HttpServletRequest request) {
+		//获取所有的频道
+		List<Channel> channels = channelService.list();
+		request.setAttribute("channels", channels);
+		return "article/postimg";
+	}
+	
+	/**
+	 * 
+	 * @Title: postImg 
+	 * @Description: 上传图片，把图片转为json数据类型，存入到list集合中
+	 * @param request
+	 * @return
+	 * @return: MsgResult
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	@RequestMapping(value="postImg",method=RequestMethod.POST)
+	@ResponseBody
+	public MsgResult postImg(HttpServletRequest request,
+			Article article,MultipartFile file[],String desc[]) throws IllegalStateException, IOException{
+		//获取登录用户对象，判断用户是否登录
+		User loginUser = (User) request.getSession().getAttribute(ConstantClass.USER_KEY);
+		//创建List集合
+		List<Image> list = new ArrayList<Image>(); 
+		//遍历每个上传的图片，并存入list集合中
+		for (int i = 0; i < desc.length && i < file.length; i++) {
+			String url = processFile(file[i]);
+			Image image = new Image();
+			image.setDesc(desc[i]);
+			image.setUrl(url);
+			//存入到list集合中
+			list.add(image);
+		}
+		
+		//获取gson转换器，转为json数据类型
+		Gson gson = new Gson();
+		//设置作者
+		article.setUserId(loginUser.getId());
+		article.setContent(gson.toJson(list));
+		//设置文章类型 图片类型
+		article.setArticleType(TypeEnum.IMG);
+		//添加到数据库
+		int add = articleService.add(article);
+		if(add > 0){
+			return new MsgResult(1, "发布成功", null);
+		}else {
+			return new MsgResult(2, "发布失败", null);
+		}
+		
 		
 	}
 	

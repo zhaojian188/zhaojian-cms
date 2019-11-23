@@ -20,8 +20,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Category;
+import com.zhaojian.beans.Image;
+import com.zhaojian.beans.TypeEnum;
 import com.zhaojian.common.CmsAssert;
 import com.zhaojian.common.MsgResult;
 import com.zhaojian.service.ArticleService;
@@ -49,8 +52,21 @@ public class ArticleController {
 		
 		Article article = articleService.getById(id); 
 		CmsAssert.AssertTrueHtml(article!=null, "文章不存在");
+		
 		request.setAttribute("article",article);
-		return "article/detail";
+		if(article.getArticleType()==TypeEnum.HTML) {
+			return "article/detail";
+		}else {
+			//获取json转换器
+			Gson gson = new Gson();
+			//文章内容转换成集合对象
+			List<Image> imgs = gson.fromJson(article.getContent(), List.class);
+			article.setImgList(imgs);
+			System.out.println("article "+article);
+			return "article/detailimg";
+			
+		}
+		
 		
 	}
 	

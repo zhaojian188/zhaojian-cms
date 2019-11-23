@@ -24,6 +24,7 @@
 			<ul class="list-group homemenu">
 			 <li class="list-group-item list-group-item-success" data="/user/myarticles">我的文章</li>
 			 <li class="list-group-item list-group-item-info" data="/user/postArticle">发布文章</li>
+			 <li class="list-group-item list-group-item-info" data="/user/postImg">发布图片</li>
 			 <li class="list-group-item list-group-item-info">我的评论</li>
 			 <li class="list-group-item list-group-item-info">投票管理</li>
 			 <li class="list-group-item list-group-item-info">个人设置</li>
@@ -31,6 +32,7 @@
 		</div>
 		
 		<div class="col-md-9" id="content">
+		
 				<div id="kindEditor" style="display: none">
 				   <!-- 引入kindEditor的样式 -->
 				  <jsp:include page="/resource/kindeditor/jsp/demo.jsp"></jsp:include>

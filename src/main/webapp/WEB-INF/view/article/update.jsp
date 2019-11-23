@@ -149,7 +149,7 @@ function publish(){
 			success:function(obj){
 				if(obj){
 					alert("修改成功!")
-					$('#center').load("/user/myarticlelist");
+					$('#content').load("/user/myarticles");
 					location="/user/home";
 				}else{
 					alert("修改失败")

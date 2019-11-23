@@ -24,9 +24,11 @@ import com.github.pagehelper.PageInfo;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Category;
 import com.zhaojian.beans.Channel;
+import com.zhaojian.beans.Link;
 import com.zhaojian.service.ArticleService;
 import com.zhaojian.service.CategoryService;
 import com.zhaojian.service.ChannelService;
+import com.zhaojian.service.LinkService;
 
 /** 
  * @ClassName: IndexController 
@@ -47,6 +49,9 @@ public class IndexController {
 	
 	@Autowired
 	ArticleService articleService;
+	
+	@Autowired
+	LinkService linkService;
 
 	
 	/**
@@ -101,8 +106,19 @@ public class IndexController {
 		
 		List<Article> newArticles = articleService.getNewArticles(5);
 		
+		// 获取最新图片文章
+		List<Article> imgArticles = articleService.getImgArticles(10);
+		
+		// 友情链接
+		PageInfo<Link> info=  linkService.list(1);
+		List<Link> linkList =  info.getList();
+		
 		request.setAttribute("hotList", hotList);
 		request.setAttribute("newArticles", newArticles);
+		request.setAttribute("imgArticles", imgArticles);
+		request.setAttribute("linkList", linkList);
+		
+		
 		
 		
 		

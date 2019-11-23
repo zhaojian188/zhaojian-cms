@@ -161,7 +161,9 @@ public interface ArticleMapper {
 			+ " values("
 			+ " #{title},#{content},#{picture},#{channelId},#{categoryId},"
 			+ "#{userId},#{hits},#{hot},#{status},#{deleted},"
-			+ "now(),now(),#{commentCnt},#{articleType})")
+			+ "now(),now(),#{commentCnt},"
+			+ "#{articleType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,"
+			+ "jdbcType=INTEGER,javaType=com.zhaojian.beans.TypeEnum})")
 	int add(Article article);
 
 
@@ -176,6 +178,29 @@ public interface ArticleMapper {
 			+ "picture=#{picture},channel_id=#{channelId},"
 			+ "category_id=#{categoryId},status=0,updated=now() WHERE id=#{id}")
 	int update(Article article);
+
+
+	/** 
+	 * @Title: favorite 
+	 * @Description: 收藏文章
+	 * @param userId
+	 * @param articleId
+	 * @return
+	 * @return: int
+	 */
+	@Insert("REPLACE cms_favorite(user_id,article_id,created)"
+			+ "VALUES(#{userId},#{articleId},now())")
+	int favorite(@Param("userId")Integer userId, @Param("articleId")int articleId);
+
+
+	/** 
+	 * @Title: getImgArticles 
+	 * @Description: 获取10篇图片文章
+	 * @param num
+	 * @return
+	 * @return: List<Article>
+	 */
+	List<Article> getImgArticles(int num);
 
 	
 
