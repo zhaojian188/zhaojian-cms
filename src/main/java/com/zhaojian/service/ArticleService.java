@@ -164,6 +164,27 @@ public interface ArticleService {
 	 */
 	List<Article> getImgArticles(int i);
 
+	/** 
+	 * @Title: myfavoriteById 
+	 * @Description: 我的收藏
+	 * @param page
+	 * @param id
+	 * @param id2 
+	 * @param  
+	 * @return
+	 * @return: PageInfo<Article>
+	 */
+	PageInfo<Article> myfavoriteById(int page, int id);
+
+	/** 
+	 * @Title: delFavorite 
+	 * @Description: 取消收藏
+	 * @param id
+	 * @return
+	 * @return: int
+	 */
+	int delFavorite(int id);
+
 }
 
 	

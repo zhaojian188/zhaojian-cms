@@ -92,6 +92,52 @@ public class UserController {
 		CmsAssert.AssertTrue(result>0, "收藏成功");
 		return new MsgResult(1, "恭喜您，收藏成功", null);
 	}
+	/**
+	 * 
+	 * @Title: myfavorite 
+	 * @Description: TODO
+	 * @return
+	 * @return: String
+	 */
+	@RequestMapping("myfavorite")
+	public String myfavorite(HttpServletRequest request,
+			@RequestParam(defaultValue="1")int page){
+		User loginUser = (User) request.getSession().getAttribute(ConstantClass.USER_KEY);
+		PageInfo<Article> pageInfo = articleService.myfavoriteById(page,loginUser.getId());
+		request.setAttribute("pageInfo", pageInfo);
+		
+		return "user/myfavorite";
+		
+	}
+	/**
+	 * 
+	 * @Title: delArticle 
+	 * @Description: 取消收藏功能
+	 * @param request
+	 * @param id
+	 * @return
+	 * @return: MsgResult
+	 */
+	@RequestMapping("delFavorite")
+	@ResponseBody
+	public MsgResult delFavorite(HttpServletRequest request,int id){
+		
+		CmsAssert.AssertTrue(id>0, "文章id必须大于0");
+		Article article =  articleService.checkExist(id);
+		CmsAssert.AssertTrue(article!=null, "该文章不存在");
+		
+		User loginUser = (User)request.getSession().getAttribute(ConstantClass.USER_KEY);
+		/*CmsAssert.AssertTrue(
+				loginUser.getRole()==ConstantClass.USER_ROLE_ADMIN 
+				|| loginUser.getId()==article.getUserId(),
+				"只有该用户才能取消收藏该文章");*/
+		
+		int result = articleService.delFavorite(id);
+		CmsAssert.AssertTrue(result>0,"文章收藏失败");
+		return new MsgResult(1,"取消收藏成功",null);
+		
+	}
+	
 	
 	
 	//  httppxxxx://user/hello

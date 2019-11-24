@@ -231,6 +231,35 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleMapper.getImgArticles(num);
 	}
 
+	/* (non Javadoc) 
+	 * @Title: myfavoriteById
+	 * @Description: 我的收藏
+	 * @param page
+	 * @param id
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#myfavoriteById(int, java.lang.Integer) 
+	 */
+	@Override
+	public PageInfo<Article> myfavoriteById(int page, int id) {
+		PageHelper.startPage(page, ConstantClass.PAGE_SIZE);
+		List<Article> list = articleMapper.myfavoriteById(id);
+		PageInfo info = new PageInfo(list);
+		return info;
+	}
+
+	/* (non Javadoc) 
+	 * @Title: delFavorite
+	 * @Description: TODO
+	 * @param id
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#delFavorite(int) 
+	 */
+	@Override
+	public int delFavorite(int id) {
+		
+		return articleMapper.delFavorite(id);
+	}
+
 	
 
 }

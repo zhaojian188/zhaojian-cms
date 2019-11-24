@@ -46,7 +46,15 @@ public class ArticleController {
 	
 	@Autowired
 	CategoryService catService; 
-	
+	/**
+	 * 
+	 * @Title: showDetail 
+	 * @Description: 查看文章
+	 * @param request
+	 * @param id
+	 * @return
+	 * @return: String
+	 */
 	@RequestMapping("showdetail")
 	public String showDetail(HttpServletRequest request,Integer id) {
 		

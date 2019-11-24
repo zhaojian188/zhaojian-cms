@@ -13,6 +13,7 @@ package com.zhaojian.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
@@ -201,6 +202,27 @@ public interface ArticleMapper {
 	 * @return: List<Article>
 	 */
 	List<Article> getImgArticles(int num);
+
+
+	/** 
+	 * @Title: myfavoriteById 
+	 * @Description: 我的收藏列表
+	 * @param id
+	 * @return
+	 * @return: List<Article>
+	 */
+	List<Article> myfavoriteById(@Param("id")Integer id);
+
+
+	/** 
+	 * @Title: delFavorite 
+	 * @Description: TODO
+	 * @param id
+	 * @return
+	 * @return: int
+	 */
+	@Delete("DELETE FROM cms_favorite where article_id=${id}")
+	int delFavorite(@Param("id")int id);
 
 	
 
