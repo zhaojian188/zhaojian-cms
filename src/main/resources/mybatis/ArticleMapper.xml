@@ -69,7 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 我的收藏夹列表 -->
 	<select id="myfavoriteById" resultType="map">
-		select b.* from cms_favorite a left join cms_article b on a.article_id=b.id where a.user_id=#{id}
+		select b.* from cms_favorite a left join cms_article b on a.article_id=b.id 
+		where a.user_id=#{id}
+		ORDER BY created DESC
 	</select>
 	
 	<!-- 管理员根据状态查询文章 -->

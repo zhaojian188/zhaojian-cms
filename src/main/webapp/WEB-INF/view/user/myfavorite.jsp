@@ -9,8 +9,6 @@
     <tr>
       <th>id</th>
       <th width="40%">标题</th>
-      <th>频道</th>
-      <th>分类</th>
       <th>发布日期</th>
       <th>操作</th>
       </tr>
@@ -20,8 +18,6 @@
 	    <tr class="active">
 	       <td>${article.id}</td>
 	       <td>${article.title}</td>
-	       <td>${article.channel.name}</td>
-	       <td>${article.category.name}</td>
 	       <td><fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd"/></td>
 	       
 	      <td>
