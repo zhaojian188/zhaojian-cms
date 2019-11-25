@@ -37,6 +37,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Channel;
+import com.zhaojian.beans.Collect;
 import com.zhaojian.beans.Image;
 import com.zhaojian.beans.TypeEnum;
 import com.zhaojian.beans.User;
@@ -45,6 +46,7 @@ import com.zhaojian.common.ConstantClass;
 import com.zhaojian.common.MsgResult;
 import com.zhaojian.service.ArticleService;
 import com.zhaojian.service.ChannelService;
+import com.zhaojian.service.CollectService;
 import com.zhaojian.service.UserService;
 
 /** 
@@ -70,6 +72,9 @@ public class UserController {
 	
 	@Autowired
 	ChannelService channelService;
+	
+	@Autowired
+	CollectService collectService;
 	
 	private SimpleDateFormat dateFormat;
 	
@@ -482,6 +487,54 @@ public class UserController {
 		
 		
 	}
+	/**
+	 * 
+	 * @Title: collect 
+	 * @Description: 把文章添加到我的收藏夹中,收藏的名字和地址。收藏表中cms_collect
+	 * @param request
+	 * @param collect
+	 * @return
+	 * @return: MsgResult
+	 */
+	@RequestMapping("collect")
+	@ResponseBody
+	public MsgResult collect(HttpServletRequest request, Collect collect) {
+		
+		//CmsAssert.AssertTrue(id>0, "id 不合法");
+		User loginUser = (User)request.getSession().getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrue(loginUser!=null, "亲，您尚未登录！！");
+		
+		if(collect.getName().length()>20) {
+			collect.setName(collect.getName().substring(0, 20) + "...");
+		}
+		collect.setUserId(loginUser.getId());
+		int result = collectService.add(collect);
+		
+		CmsAssert.AssertTrue(result>0, "很遗憾，加入收藏失败！！");
+		return new MsgResult(1,"恭喜，收藏成功",null);
+	}
+	/**
+	 * 
+	 * @Title: comment 
+	 * @Description: 评论
+	 * @param request
+	 * @param id
+	 * @param content
+	 * @return
+	 * @return: MsgResult
+	 */
+	@RequestMapping("comment")
+	@ResponseBody
+	public MsgResult comment(HttpServletRequest request, int id,String content) {
+		
+		User loginUser = (User)request.getSession().getAttribute(ConstantClass.USER_KEY);
+		CmsAssert.AssertTrue(loginUser!=null, "亲，您尚未登录");
+		
+		int result = articleService.comment(loginUser.getId(),id,content);
+		CmsAssert.AssertTrue(result>0, "亲，评论失败了！！");
+		return new MsgResult(1,"评论成功","");
+	}
+	
 	
 	private String htmlspecialchars(String str) {
 		str = str.replaceAll("&", "&amp;");

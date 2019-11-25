@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.zhaojian.StringUtils;
 import com.zhaojian.beans.Link;
 import com.zhaojian.service.LinkService;
 
@@ -82,6 +83,11 @@ public class LinkController {
 	@PostMapping("add")
 	public String add(HttpServletRequest request,
 			@Valid @ModelAttribute("link")Link link,BindingResult result) {
+		
+		if(!StringUtils.isHttpUrl(link.getUrl())) {
+			result.rejectValue("url", "", "不是合法的url");
+		}
+		
 		//如果有错，返回到添加页面
 		if(result.hasErrors()) {
 			return "amdin/link/add";
@@ -91,7 +97,14 @@ public class LinkController {
 		return "redirect:list";
 		
 	}
-	
+	/**
+	 * 
+	 * @Title: delete 
+	 * @Description: 删除友情链接
+	 * @param id
+	 * @return
+	 * @return: boolean
+	 */
 	@RequestMapping("delete")
 	@ResponseBody
 	public boolean delete(int id) {
@@ -102,6 +115,50 @@ public class LinkController {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	/**
+	 * 
+	 * @Title: add 
+	 * @Description:跳转到修改页面
+	 * @param request
+	 * @param id
+	 * @return
+	 * @return: String
+	 */
+	@GetMapping("update")
+	public String add(HttpServletRequest request,int id) {
+		request.setAttribute("link", linkService.get(id));
+		return "amdin/link/update";	 
+	}
+	/**
+	 * 
+	 * @Title: update 
+	 * @Description: 管理员修改友情链接
+	 * @param request
+	 * @param link
+	 * @param result
+	 * @return
+	 * @return: String
+	 */
+	@PostMapping("update")
+	public String update(HttpServletRequest request,
+			@Valid  @ModelAttribute("link") Link link,
+			BindingResult result) {
+			
+		if(!StringUtils.isHttpUrl(link.getUrl())) {
+			result.rejectValue("url", "", "不是合法的url");
+		}
+		
+		// 有错误 还在原来的页面
+		if(result.hasErrors()) {
+			//request.setAttribute("link", link);
+			return "amdin/link/update";	
+		}
+		
+		linkService.update(link);
+		
+		// 没有错误跳转到列表页面
+		return "redirect:list";
 	}
 	
 	

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhaojian.beans.Article;
+import com.zhaojian.beans.Comment;
 import com.zhaojian.common.ConstantClass;
 import com.zhaojian.dao.ArticleMapper;
 import com.zhaojian.service.ArticleService;
@@ -258,6 +259,43 @@ public class ArticleServiceImpl implements ArticleService{
 	public int delFavorite(int id) {
 		
 		return articleMapper.delFavorite(id);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: comment
+	 * @Description: 评论
+	 * @param userId
+	 * @param articleId
+	 * @param content
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#comment(java.lang.Integer, int, java.lang.String) 
+	 */
+	@Override
+	public int comment(Integer userId, int articleId, String content) {
+		//插入评论表一条数据
+		int result = articleMapper.addComment(userId, articleId, content);
+		if(result>0) {
+				// 让文章表中的评论数量自增1
+				articleMapper.increaseCommentCnt(articleId);
+		}else {
+			return 0;
+			}
+		return result;
+	}
+
+	/* (non Javadoc) 
+	 * @Title: commentlist
+	 * @Description: 获取评论内容
+	 * @param articleId
+	 * @param page
+	 * @return 
+	 * @see com.zhaojian.service.ArticleService#commentlist(int, int) 
+	 */
+	@Override
+	public PageInfo<Comment> commentlist(int articleId, int page) {
+		PageHelper.startPage(page,10);
+		
+		return new PageInfo<Comment>(articleMapper.commentlist(articleId));
 	}
 
 	

@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.zhaojian.beans.Link;
 
@@ -55,5 +56,26 @@ public interface LinkMapper {
 	 */
 	@Delete("DELETE FROM cms_link WHERE id=#{id}")
 	void delete(@Param("id")int id);
+
+	/** 
+	 * @Title: get 
+	 * @Description: 根据id回显要修改的友情链接
+	 * @param id
+	 * @return
+	 * @return: Link
+	 */
+	@Select("SELECT * FROM cms_link WHERE id=#{value}")
+	Link get(int id);
+
+	/** 
+	 * @Title: update 
+	 * @Description: 修改友情链接
+	 * @param link
+	 * @return
+	 * @return: int
+	 */
+	@Update("UPDATE cms_link set url=#{url},name=#{name} "
+			+ "	WHERE id=#{id}")
+	int update(Link link);
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.zhaojian.beans.Article;
+import com.zhaojian.beans.Comment;
 
 /** 
  * @ClassName: ArticleService 
@@ -184,6 +185,27 @@ public interface ArticleService {
 	 * @return: int
 	 */
 	int delFavorite(int id);
+
+	/** 
+	 * @Title: comment 
+	 * @Description: 评论
+	 * @param id
+	 * @param id2
+	 * @param content
+	 * @return
+	 * @return: int
+	 */
+	int comment(Integer userId, int articleId, String content);
+
+	/** 
+	 * @Title: commentlist 
+	 * @Description: 获取评论的集合
+	 * @param id
+	 * @param page
+	 * @return
+	 * @return: PageInfo<Comment>
+	 */
+	PageInfo<Comment> commentlist(int articleId, int page);
 
 }
 

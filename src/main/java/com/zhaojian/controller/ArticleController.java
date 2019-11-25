@@ -18,11 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Category;
+import com.zhaojian.beans.Comment;
 import com.zhaojian.beans.Image;
 import com.zhaojian.beans.TypeEnum;
 import com.zhaojian.common.CmsAssert;
@@ -77,13 +80,41 @@ public class ArticleController {
 		
 		
 	}
-	
+	/**
+	 * 
+	 * @Title: getCategoryByChannel 
+	 * @Description: 获取频道信息
+	 * @param chnId
+	 * @return
+	 * @return: MsgResult
+	 */
 	@RequestMapping("getCategoryByChannel")
 	@ResponseBody
 	public MsgResult getCategoryByChannel(int chnId) {
 		//List<Category> categories =  
 		List<Category> categories = catService.listByChannelId(chnId);
 		return new MsgResult(1, "",  categories);
+		
+	}
+	/**
+	 * 
+	 * @Title: commentlist 
+	 * @Description: 获取该用户的所有评论
+	 * @param request
+	 * @param id
+	 * @param page
+	 * @return
+	 * @return: String
+	 */
+	@RequestMapping("commentlist")
+	//@ResponseBody
+	public String commentlist(HttpServletRequest request, int id,
+			@RequestParam(defaultValue="1") int page) {
+		
+		PageInfo<Comment> pageComment =  articleService.commentlist(id,page);
+		request.setAttribute("pageComment", pageComment);
+		return "article/comments";
+		//return new MsgResult(1,"获取成功",pageComment);
 		
 	}
 }

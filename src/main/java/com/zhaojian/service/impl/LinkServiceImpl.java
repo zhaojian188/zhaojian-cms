@@ -66,4 +66,27 @@ public class LinkServiceImpl implements LinkService {
 	public void delete(int id) {
 		linkMapper.delete(id);
 	}
+
+	/* (non Javadoc) 
+	 * @Title: get
+	 * @Description: TODO
+	 * @param id
+	 * @return 
+	 * @see com.zhaojian.service.LinkService#get(int) 
+	 */
+	@Override
+	public Link get(int id) {
+		return linkMapper.get(id);
+	}
+
+	/* (non Javadoc) 
+	 * @Title: update
+	 * @Description: TODO
+	 * @param link 
+	 * @see com.zhaojian.service.LinkService#update(com.zhaojian.beans.Link) 
+	 */
+	@Override
+	public int update(Link link) {
+		return linkMapper.update(link);
+	}
 }

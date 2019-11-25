@@ -21,6 +21,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.zhaojian.beans.Article;
+import com.zhaojian.beans.Comment;
 
 /** 
  * @ClassName: ArticleMapper 
@@ -223,6 +224,42 @@ public interface ArticleMapper {
 	 */
 	@Delete("DELETE FROM cms_favorite where article_id=${id}")
 	int delFavorite(@Param("id")int id);
+
+
+	/** 
+	 * @Title: addComment 
+	 * @Description: 添加评论
+	 * @param userId
+	 * @param articleId
+	 * @param content
+	 * @return
+	 * @return: int
+	 */
+	@Insert("INSERT INTO cms_comment (articleId,userId,content,created)"
+			+ " VALUES(#{articleId},#{userId},#{content},now())")
+	int addComment(@Param("userId")Integer userId, 
+			@Param("articleId")int articleId, @Param("content")String content);
+
+
+	/** 
+	 * @Title: increaseCommentCnt 
+	 * @Description: 评论数目自增一个
+	 * @param articleId
+	 * @return: void
+	 */
+	@Update("UPDATE cms_article set commentCnt=commentCnt+1 WHERE id=#{value} ")
+	void increaseCommentCnt(int articleId);
+
+
+	/** 
+	 * @Title: commentlist 
+	 * @Description: 查看所有评论
+	 * @param articleId
+	 * @return
+	 * @return: List<Comment>
+	 */
+	@Select("SELECT * FROM cms_comment WHERE articleId=#{value}")
+	List<Comment> commentlist(int articleId);
 
 	
 

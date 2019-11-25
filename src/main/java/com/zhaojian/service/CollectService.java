@@ -1,12 +1,12 @@
 /**   
  * Copyright © 2019 公司名. All rights reserved.
  * 
- * @Title: LinkService.java 
+ * @Title: collectService.java 
  * @Prject: zhaojian-cms
  * @Package: com.zhaojian.service 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日
+ * @时间: 2019年11月25日
  * @version: V1.0   
  */
 package com.zhaojian.service;
@@ -14,58 +14,61 @@ package com.zhaojian.service;
 import javax.validation.Valid;
 
 import com.github.pagehelper.PageInfo;
-import com.zhaojian.beans.Link;
+import com.zhaojian.beans.Collect;
 
 /** 
- * @ClassName: LinkService 
+ * @ClassName: collectService 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日 
+ * @时间: 2019年11月25日 
  */
-public interface LinkService {
+public interface CollectService {
 
 	/** 
 	 * @Title: list 
-	 * @Description: 列表+分页
+	 * @Description: TODO
+	 * @param id
 	 * @param page
 	 * @return
 	 * @return: PageInfo
 	 */
-	PageInfo list(int page);
-
+	PageInfo list(int userId, int page);
+	
 	/** 
 	 * @Title: add 
-	 * @Description: 添加
-	 * @param link
+	 * @Description: TODO
+	 * @param collect
 	 * @return: void
 	 */
-	void add(Link link);
-
+	int add(Collect collect);
 	/** 
 	 * @Title: delete 
 	 * @Description: TODO
 	 * @param id
-	 * @return: void
+	 * @return
+	 * @return: int
 	 */
-	void delete(int id);
+	int delete(int id);
 	
 	/** 
 	 * @Title: get 
-	 * @Description: 根据id获取要修改的友情链接
+	 * @Description: TODO
 	 * @param id
 	 * @return
 	 * @return: Object
 	 */
-	Link get(int id);
-
+	Collect get(int id);
 
 	/** 
 	 * @Title: update 
-	 * @Description: 修改友情链接
-	 * @param link
+	 * @Description: TODO
+	 * @param collect
 	 * @return: void
 	 */
-	int update(Link link);
+	int update(@Valid Collect collect);
 
+	
+
+	
 	
 }

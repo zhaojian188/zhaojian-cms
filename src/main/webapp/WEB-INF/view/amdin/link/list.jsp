@@ -24,7 +24,7 @@
 	        <td>${link.name}</td>
 	        <td>${link.url}</td>
 	        <td><fmt:formatDate pattern="YYYY年MM月dd号 HH:mm:ss" value="${link.created}"></fmt:formatDate></td>
-	         <td> <input type="button" value="修改" onclick="udpate(${link.id})">
+	         <td> <input type="button" value="修改" onclick="update(${link.id})">
 	             &nbsp;
 	              <input type="button" value="删除" onclick="del(${link.id})">
 	         </td>
@@ -56,6 +56,13 @@
 	function add(){
 		$("#content").load("/link/add")
 	}
+	
+	//刷新当前页
+	function refresh(){
+		
+		var url="/link/list?page=${info.pageNum}";
+		$("#content").load(url);
+	}
 	//删除
 	function del(id) {
 		$.post(
@@ -64,12 +71,17 @@
 			function(flag){
 				if(flag>0) {
 					alert("删除成功");
-					location.reload();
+					refresh();
 				}else{
-					alert("删除失败")
+					alert(msg.errorMsg);
 				}
 			},
 			"json"
 		)
 	}
+	//跳转到修改链接页面
+	function update(id){
+		$("#content").load("/link/update?id="+id)
+	}
+	
 </script>
