@@ -6,7 +6,7 @@
  * @Package: com.zhaojian.service 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日
+ * @时间: 2019年11月27日
  * @version: V1.0   
  */
 package com.zhaojian.service;
@@ -20,7 +20,7 @@ import com.zhaojian.beans.Link;
  * @ClassName: LinkService 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日 
+ * @时间: 2019年11月27日  
  */
 public interface LinkService {
 

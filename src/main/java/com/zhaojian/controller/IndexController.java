@@ -118,10 +118,6 @@ public class IndexController {
 		request.setAttribute("imgArticles", imgArticles);
 		request.setAttribute("linkList", linkList);
 		
-		
-		
-		
-		
 		return "index";
 	}
 			

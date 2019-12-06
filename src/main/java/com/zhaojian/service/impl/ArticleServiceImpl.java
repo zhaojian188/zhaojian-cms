@@ -14,6 +14,7 @@ package com.zhaojian.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -36,17 +37,36 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	ArticleMapper articleMapper;
 	
+	@SuppressWarnings("rawtypes")
+	@Autowired
+	RedisTemplate redisTemplate;
+	
 	/* (non Javadoc) 
-	 * @Title: 查询历史文章
+	 * @Title: 查询热门文章
 	 * @Description: TODO
 	 * @param page
 	 * @return 
 	 * @see com.zhaojian.service.ArticleService#hotList(int) 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public PageInfo<Article> hotList(int page) {
-		PageHelper.startPage(page, ConstantClass.PAGE_SIZE);
-		return new PageInfo<Article>(articleMapper.hostList());
+		//PageHelper.startPage(page, ConstantClass.PAGE_SIZE);
+		//1.从redis中查询热门文章(每页显示10条)
+		List<Article> list = redisTemplate.opsForList().range("hot_articles", 0, 9);
+		//2.判断redis中的数据是否为空
+		if(list!=null && list.size()>0) {
+			//3.如果redis的数据是非空，则直接返回web层
+			System.err.println("从redis中查询了热门文章============");
+			//返回web层
+			return new PageInfo<Article>(list);
+		}
+		//4.如果redis的数据为空，从mysql中查询数据，添加到redis，并返回给web层
+		List<Article> mysqlDB = articleMapper.hostList();
+		System.err.println("从mysql中查询了热门文章===========");
+		//mysqlDB是一个集合,要toArray一下，返回数组，因为redis的list集合的值类型是数组类型
+		redisTemplate.opsForList().leftPushAll("hot_articles", mysqlDB.toArray());
+		return new PageInfo<Article>(mysqlDB);
 	}
 
 	/* (non Javadoc) 

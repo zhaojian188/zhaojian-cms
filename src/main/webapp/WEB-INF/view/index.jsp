@@ -152,7 +152,7 @@
 					</div>
 					<div class="panel-body">
 						<c:forEach items="${imgArticles}" var="article" varStatus="index"> 
-							<a href="javascript:showArticle(${article.id})">${index.index}. ${article.title}</a>
+							<a href="javascript:showArticle(${article.id})">${index.index+1}. ${article.title}</a>
 							<br/>
 						</c:forEach>
 					</div>
@@ -192,11 +192,13 @@
 
 
 <!-- 底部 -->
-<nav class="navbar navbar-default" style="background:#000099">
- <div class="container-fluid" style="text-align:center">
- 	<div class="row" style="margin-top:13px">
+<nav class="navbar navbar-default" style="background:skyblue">
+ <div class="container-fluid" >
+  	<span style="color: red">友情链接:</span>
+ 	<!-- 友情链接 -->
+ 	<div class="row" style="margin-top:13px" align="center">
  			<c:forEach items="${linkList}" var ="link">
- 				<div class="col-md-1"><a href="${link.url}" class="fl"> ${link.name}</a></div>
+ 				<div class="col-md-1" ><a href="${link.url}" class="fl"><span style="color: green">${link.name}</span></a></div>
  			</c:forEach>
  	</div>
  	

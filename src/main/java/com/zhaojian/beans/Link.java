@@ -6,7 +6,7 @@
  * @Package: com.zhaojian.beans 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日
+ * @时间: 2019年11月27日
  * @version: V1.0   
  */
 package com.zhaojian.beans;
@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.URL;
  * @ClassName: Link 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日 
+ * @时间: 2019年11月27日   
  */
 public class Link {
 	

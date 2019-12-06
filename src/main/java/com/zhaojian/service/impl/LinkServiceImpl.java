@@ -6,7 +6,7 @@
  * @Package: com.zhaojian.service.impl 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日
+ * @时间: 2019年11月27日
  * @version: V1.0   
  */
 package com.zhaojian.service.impl;
@@ -24,20 +24,21 @@ import com.zhaojian.service.LinkService;
  * @ClassName: LinkServiceImpl 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年11月23日 
+ * @时间: 2019年11月27日  
  */
 @Service
 public class LinkServiceImpl implements LinkService {
 	@Autowired
 	private LinkMapper linkMapper;
 
-	/* (non Javadoc) 
+	/*(non Javadoc) 
 	 * @Title: list
 	 * @Description: 列表
 	 * @param page
 	 * @return 
 	 * @see com.zhaojian.service.LinkService#list(int) 
 	 */
+	 
 	@Override
 	public PageInfo list(int page) {
 		PageHelper.startPage(page, 10);
@@ -45,7 +46,7 @@ public class LinkServiceImpl implements LinkService {
 		return new PageInfo<Link>(linkMapper.list());
 	}
 
-	/* (non Javadoc) 
+	/*(non Javadoc) 
 	 * @Title: add
 	 * @Description: TODO
 	 * @param link 
@@ -56,7 +57,7 @@ public class LinkServiceImpl implements LinkService {
 		linkMapper.add(link);
 	}
 
-	/* (non Javadoc) 
+	/*(non Javadoc) 
 	 * @Title: delete
 	 * @Description: 删除链接
 	 * @param id 
@@ -67,7 +68,7 @@ public class LinkServiceImpl implements LinkService {
 		linkMapper.delete(id);
 	}
 
-	/* (non Javadoc) 
+	/*(non Javadoc) 
 	 * @Title: get
 	 * @Description: TODO
 	 * @param id
