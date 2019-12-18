@@ -10,7 +10,6 @@
  <script type="text/javascript" src="/resource/js/jquery-3.2.1.js"></script> 
  <script type="text/javascript" src="/resource/bootstrap/js/bootstrap.js"></script>
 
-<!-- <link rel="stylesheet" href="/resource/css/index3.css"> -->
 <title>CMS后台管理平台</title>
 
 </head>

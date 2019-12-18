@@ -16,7 +16,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +29,9 @@ import com.zhaojian.beans.Article;
 import com.zhaojian.beans.Category;
 import com.zhaojian.beans.Channel;
 import com.zhaojian.beans.Link;
+import com.zhaojian.common.ConstantClass;
+import com.zhaojian.common.HLUtils;
+import com.zhaojian.dao.ArticleReposit;
 import com.zhaojian.service.ArticleService;
 import com.zhaojian.service.CategoryService;
 import com.zhaojian.service.ChannelService;
@@ -52,7 +59,73 @@ public class IndexController {
 	
 	@Autowired
 	LinkService linkService;
-
+	//注入es仓库
+	@Autowired
+	ArticleReposit articleReposit;
+	
+	//注入spring整合es的模板
+	@Autowired
+	ElasticsearchTemplate elasticsearchTemplate;
+	/**
+	 * 
+	 * @Title: searchES 
+	 * @Description: 根据ES索引库做模糊查询，搜索相关的文章
+	 * @param m
+	 * @param key
+	 * @return
+	 * @return: String
+	 */
+	@GetMapping("index")
+	public String searchES(Model m,String key,@RequestParam(defaultValue="1")int page) {
+		//如果当前页等于0
+		if(page==0) {
+			//就让当期前页等于1
+			page = 1;
+		}
+		
+		//注入仓库
+		//1.根据标题来搜索文章并且搜索的关键字高亮显示 
+		AggregatedPage<?> selectObjects = HLUtils.selectObjects(elasticsearchTemplate, Article.class, page, ConstantClass.PAGE_SIZE, new String [] {"title"}, "id", key);
+		//返回要查询包含关键字的集合
+		List<Article> list = (List<Article>) selectObjects.getContent();
+		//2.用es查询好的数据做分页处理
+		//把查询到的集合放入PageInfo分页工具类，进行分页
+		PageInfo<Article> info = new PageInfo<>(list);
+		
+		//设置当前页
+		info.setPageNum(page);
+		//设置每页展示的数据
+		info.setPageSize(ConstantClass.PAGE_SIZE);
+		//设置数据总条数
+		info.setTotal(selectObjects.getTotalElements());
+		//获取总页(三木运算判断，如果总条数%每页展示的数据==0，他就是总页数，如果不是，则是总页数+1)
+		int pages = (int) (selectObjects.getTotalElements()%ConstantClass.PAGE_SIZE==0?selectObjects.getTotalElements()/ConstantClass.PAGE_SIZE:selectObjects.getTotalElements()/ConstantClass.PAGE_SIZE+1);
+		/*if(selectObjects.getTotalElements()%ConstantClass.PAGE_SIZE == 0){
+			int pages = (int) (selectObjects.getTotalElements() / ConstantClass.PAGE_SIZE);
+		} else {
+			int pages = (int) (selectObjects.getTotalElements() / ConstantClass.PAGE_SIZE + 1);
+		}*/
+		//设置总页数
+		info.setPages(pages);
+		//如果当前页等于最后一页
+		if(page == pages){
+			//就让当前页等于最后一页
+			page=pages;
+		}
+		//设置上一页
+		info.setPrePage(page-1);
+		//设置下一页
+		info.setNextPage(page+1);
+		
+		//分页对象放到model作用域里面
+		m.addAttribute("hotList", info);
+		//把模糊查询的值放入model作用域，做全局查询的回显时用
+		m.addAttribute("key", key);
+		//高亮显示
+		return "index";
+	}
+	
+	
 	
 	/**
 	 * 

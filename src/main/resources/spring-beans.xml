@@ -20,6 +20,13 @@
 	
 	<!-- 加载kafka监听配置 -->
 	<import resource="classpath:consumer.xml"/>
+	
+	<!-- 加载kafka生产者的配置 -->
+	<import resource="classpath:producer.xml"/>
+	
+	<!-- 加载es的配置 -->
+	<import resource="classpath:es.xml"/>
+	
 	<!-- 1、注解扫描器 -->
 	<!-- todo -->
 	<context:component-scan base-package="com.zhaojian" >

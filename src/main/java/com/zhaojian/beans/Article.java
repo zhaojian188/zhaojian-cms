@@ -15,12 +15,21 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /** 
  * @ClassName: Article 
  * @Description: TODO
  * @作者: ZJ 
  * @时间: 2019年11月14日 
  */
+//索引库的名称和类型都要用小写字母，用大写字目会报错！！！！！！！！！！！
+@Document(indexName="cms_article",type="article")
 public class Article implements Serializable{
 	/**
 	 * @fieldName: serialVersionUID
@@ -29,24 +38,31 @@ public class Article implements Serializable{
 	 */
 	private static final long serialVersionUID = -8069921379255248405L;
 	
+	@Id  //指定主键
 	private Integer id               ;
 	// 文章标题
+	@Field(analyzer="ik_smart",index=true,store=true,searchAnalyzer="ik_smart",type=FieldType.text)
 	private String title            ;
 	// 文章内容
+	@Field(analyzer="ik_smart",index=true,store=true,searchAnalyzer="ik_smart",type=FieldType.text)
 	private String content          ;
 	//标题图片的url 地址
 	private String picture          ;
-	// 频道
+	
 	private Integer channelId       ;
+	// 频道
+//	@JsonIgnore
 	private Channel channel         ;
 	
 	private Integer categoryId      ;
 	// 文章的分类
+//	@JsonIgnore
 	private Category category;
 	
 	
 	private Integer userId          ;
-	private User user          ;
+//	@JsonIgnore
+	private User user          		;
 	
 	// 点击数量
 	private int  hits             ;
@@ -67,9 +83,11 @@ public class Article implements Serializable{
 	private int commentCnt       ;
 	
 	//文章类型(变为枚举类型)
+//	@JsonIgnore
 	private TypeEnum articleType = TypeEnum.HTML ;
 	
 	//该文章的所有图片放入List集合
+//	@JsonIgnore
 	private List<Image> imgList;
 
 	/**

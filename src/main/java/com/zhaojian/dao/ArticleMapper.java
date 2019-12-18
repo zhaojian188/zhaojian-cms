@@ -261,6 +261,15 @@ public interface ArticleMapper {
 	@Select("SELECT * FROM cms_comment WHERE articleId=#{value}")
 	List<Comment> commentlist(int articleId);
 
+
+	/** 
+	 * @Title: findAll 
+	 * @Description: 查询所有文章
+	 * @return
+	 * @return: List<Article>
+	 */
+	List<Article> findArticle();
+
 	
 
 }

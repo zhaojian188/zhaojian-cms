@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.zhaojian.beans.Article;
 import com.zhaojian.beans.User;
@@ -140,7 +141,8 @@ public class AdminController {
 	public MsgResult getArticle(int id) {
 		Article article = articleService.getDetailById(id);
 		CmsAssert.AssertTrue(article!=null, "文章不存在");
-		return new MsgResult(1,"获取成功",article);
+		
+		return new MsgResult(1,"获取成功",JSON.parseObject(JSON.toJSONString(article)));
 	}
 	
 	@RequestMapping("applyArticle")

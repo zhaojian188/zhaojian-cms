@@ -22,6 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<association property="category" column="category_id" select="com.zhaojian.dao.CategoryMapper.findById"></association>
 	</resultMap>
 	
+	<!-- 从mysql数据库中，查询所有文章 -->
+	<select id="findArticle" resultMap="articleMapper">
+		SELECT * FROM cms_article where deleted=0 and status=1
+	</select>
 	<!-- 最新文章 -->
 	<select id="newList" resultType="Article">
 		SELECT id,title FROM cms_article 

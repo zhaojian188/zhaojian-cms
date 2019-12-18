@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<script type="text/javascript" src="/resource/bootstrap/js/bootstrap.js"></script>
-
 
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="articleDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -28,7 +26,7 @@
 			</div>
 			<div class="modal-footer">
 				<input type="button" class="btn btn-default" data-dismiss="modal">关闭
-				</input>
+				
 				<input type="button" value="通过" onclick="apply(1)" class="btn btn-primary">
 			
 				<input type="button" value="拒绝" onclick="apply(2)" class="btn btn-danger">
@@ -83,8 +81,9 @@
 	       </c:choose>
 	       </td>
 	      <td>
-	      	<input type="button" onclick="toApply(${article.id})" value="审核" class="btn-info"/>
-	      	<input type="button" onclick="delArticle(${article.id})" value="删除"  class="btn-danger"/>
+	      	<%-- <input class="btn btn-primary btn-lg" data-toggle="modal" data-target="#articleDetailModal" onclick="toApply(${article.id})" value="审核" class="btn-info"/> --%>
+	      	<input type="button" data-toggle="modal" data-target="#articleDetailModal" onclick="toApply(${article.id})" value="审核" class="btn-info"/>
+	      	<input type="button" onclick="delArticle(${article.id})" value="删除" class="btn-danger"/>
 	      </td>
 	    </tr>
 	   
@@ -94,7 +93,7 @@
 
 <ul class="pagination">
     <li><a href="javascript:goPage(${pageInfo.prePage})">&laquo;</a></li>
-    <c:forEach begin="${pageInfo.pageNum-2 > 1 ? info.pageNum-2:1}" end="${pageInfo.pageNum+2 > info.pages ? info.pages:info.pageNum+2}" varStatus="index">    		
+    <c:forEach begin="${pageInfo.pageNum-2 > 1 ? pageInfo.pageNum-2:1}" end="${pageInfo.pageNum+2 > pageInfo.pages ? pageInfo.pages:pageInfo.pageNum+2}" varStatus="index">    		
     	<c:if test="${pageInfo.pageNum!=index.index}">
     		<li><a href="javascript:goPage(${index.index})">${index.index}</a></li>
     	</c:if>
@@ -150,8 +149,9 @@
 				}else{
 					alert(data.errorMsg);
 				}
-		}
-		,"json");
+		},
+		"json"
+		);
 	}
 	
 	
@@ -161,22 +161,24 @@
 	*  以模态框的形式显示
 	*/
 	function toApply(articleId){
-		$.post("/admin/getArticle",{id:articleId},function(data){
-			if(data.result==1){
-				
-				globalArticleId=data.data.id;
-				
-				$("#articleTitle").text(data.data.title);
-				$("#articleContent").html(data.data.content);
-				$("#articleInfo").text("作者：" + data.data.user.username + 
-					" 频道：" + data.data.channel.name +
-					" 分类：" + data.data.category.name);
-				
-				$('#articleDetailModal').modal('show');
-				//$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
-			}else{
-				alert(data.errorMsg);
-			}
+		$.post(
+			"/admin/getArticle",
+			{id:articleId},
+			function(data){
+				if(data.result==1){
+					//alert(JSON.stringify(data.data));
+					globalArticleId=data.data.id;
+					
+					$("#articleTitle").text(data.data.title);
+					$("#articleContent").html(data.data.content);
+					$("#articleInfo").text("作者：" + data.data.user.username  + 
+						" 频道：" + data.data.channel.name +
+						" 分类：" + data.data.category.name);
+					
+					//$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+				}else{
+					alert(data.errorMsg);
+				}
 		},"json")
 		
 	}
@@ -192,14 +194,14 @@
 		},"json")
 	}
 	//审核完成后，刷新到列表页面
-	$('#articleDetailModal').on('hidden.bs.modal', function () {
-		  // 执行一些动作...
-		$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+	$('#articleDetailModal').on('hidden.bs.modal', 
+		function () {
+			location.reload(true);
+		 	// 执行一些动作...
+			$("#content").load("/admin/articles?page=${pageInfo.pageNum}");
+			location.reload(true);
 		  
 	})
-		
+	
 </script>
 
-
-
-    

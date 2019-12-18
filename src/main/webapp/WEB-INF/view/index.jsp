@@ -124,18 +124,28 @@
 						<div class="row" style="text-align: center">
 							<hr width="88%" style="background-color:#D2691E;border:none;height:1px">
 							<ul class="pagination">
-								    <li><a href="/index?page=${hotList.prePage}">&laquo;</a></li>
+									<!-- 把上一页的值带上模糊查询的key值一块传过去 -->
+								    <li><a href="/index?page=${hotList.prePage}&key=${key}">&laquo;</a></li>
+								    	
+								    <!-- 变量这个pageinfo对象，如果当前页大于1，则让他向前显示2页，如果不是，则让他返回第1页 -->
 								    <c:forEach begin="${hotList.pageNum-2 > 1 ? hotList.pageNum-2:1}" 
 									end="${hotList.pageNum+2 > hotList.pages ? hotList.pages:hotList.pageNum+2}" varStatus="index">    		
 								    	<c:if test="${hotList.pageNum!=index.index}">
-								    		<li><a href="/index?page=${index.index}">${index.index}</a></li>
+								    		<li><a href="/index?page=${index.index}&key=${key}">${index.index}</a></li>
 								    	</c:if>
 								    	<c:if test="${hotList.pageNum==index.index}">
-								    		<li><a href="/index?page=${index.index}"><strong> ${index.index} </strong> </a></li>
+								    		<li><a href="/index?page=${index.index}&key=${key}"><strong> ${index.index} </strong> </a></li>
 								    	</c:if>
 								    	
 								    </c:forEach>
-								    <li><a href="/index?page=${hotList.nextPage}">&raquo;</a></li>
+								    <li>
+								    <c:if test="${hotList.pageNum < hotList.pages }">
+								    	<a href="/index?page=${hotList.nextPage}&key=${key}">&raquo;</a>
+								    </c:if>
+								    <c:if test="${hotList.pageNum >= hotList.pages }">
+								    	<a href="/index?page=${hotList.nextPage}&key=${key}" style="display: none" >&raquo;</a>
+								    </c:if>
+								    </li>
 								</ul>
 						</div>
 					</div>
@@ -188,8 +198,6 @@
   </div>
   
 </div>
-
-
 
 <!-- 底部 -->
 <nav class="navbar navbar-default" style="background:skyblue">

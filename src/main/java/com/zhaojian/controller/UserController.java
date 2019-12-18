@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhaojian.beans.Article;
@@ -75,6 +77,9 @@ public class UserController {
 	
 	@Autowired
 	CollectService collectService;
+	
+	@Autowired
+	KafkaTemplate<String, String> kafkaTemplate;
 	
 	private SimpleDateFormat dateFormat;
 	
@@ -136,8 +141,9 @@ public class UserController {
 				loginUser.getRole()==ConstantClass.USER_ROLE_ADMIN 
 				|| loginUser.getId()==article.getUserId(),
 				"只有该用户才能取消收藏该文章");*/
-		
+		//从mysql数据库删除,取消收藏
 		int result = articleService.delFavorite(id);
+		
 		CmsAssert.AssertTrue(result>0,"文章收藏失败");
 		return new MsgResult(1,"取消收藏成功",null);
 		
@@ -292,8 +298,13 @@ public class UserController {
 			String picUrl = processFile(file);
 			article.setPicture(picUrl);
 		}
-		
+		//这个是修改了mysql的数据库
 		int result = articleService.update(article);
+		
+		//由于你不知道要修改的文章的id，因此需要把修改的文章的对象发过去
+		String jsonString = JSON.toJSONString(article);
+		//把修改操作通过kafka通知到redis数据库做修改操作
+		kafkaTemplate.send("articles","update=" + jsonString);
 		
 		if(result>0) {
 			// 成功
@@ -341,7 +352,7 @@ public class UserController {
 	 * @param request
 	 * @param file
 	 * @param article
-	 * @return
+	 * @return   发表文章
 	 * @throws IllegalStateException
 	 * @throws IOException
 	 * @return: MsgResult
@@ -356,8 +367,13 @@ public class UserController {
 		}
 		User loginUser  = (User)request.getSession().getAttribute(ConstantClass.USER_KEY);
 		article.setUserId(loginUser.getId());
-		
+		//发表文章
 		int result = articleService.add(article);
+		//将article对象转为json字符串形式
+		String jsonString = JSON.toJSONString(article);
+		//通知kafka，让次逻辑(redis)进行新增
+		kafkaTemplate.send("articles", "add="+jsonString);
+		
 		if(result>0) {
 			return new MsgResult(1, "处理成功",null);
 		}else {
@@ -376,7 +392,6 @@ public class UserController {
     	
     	log.info("updloadPath is "  + updloadPath);
 
-    	
     	//1 求扩展名  "xxx.jpg"
     	String suffixName =  file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
     	String fileNamePre = UUID.randomUUID().toString();
@@ -413,7 +428,15 @@ public class UserController {
 		request.setAttribute("pageInfo", pageInfo);
 		return "user/myarticles";
 	}
-	
+	/**
+	 * 
+	 * @Title: delArticle 
+	 * @Description: 删除文章
+	 * @param request
+	 * @param id
+	 * @return
+	 * @return: MsgResult
+	 */
 	@RequestMapping("delArticle")
 	@ResponseBody
 	public MsgResult delArticle(HttpServletRequest request,int id){
@@ -427,8 +450,11 @@ public class UserController {
 				loginUser.getRole()==ConstantClass.USER_ROLE_ADMIN 
 				|| loginUser.getId()==article.getUserId(),
 				"只有管理员和文章的作者能删除文章");
-		
+		//执行mysql的文章删除
 		int result = articleService.delete(id);
+		//通知kafka，让次逻辑(redis)执行删除命令，从redis数据库删除
+		kafkaTemplate.send("articles", "del="+id);
+		
 		CmsAssert.AssertTrue(result>0,"文章删除失败");
 		return new MsgResult(1,"删除成功",null);
 		
