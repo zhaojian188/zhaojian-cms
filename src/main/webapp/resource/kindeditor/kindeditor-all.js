@@ -967,7 +967,7 @@ function _mediaImg(blankPath, attrs) {
 	html += 'data-ke-tag="' + escape(srcTag) + '" alt="" />';
 	return html;
 }
-
+
 function _tmpl(str, data) {
 	var fn = new Function("obj",
 		"var p=[],print=function(){p.push.apply(p,arguments);};" +
@@ -2652,7 +2652,7 @@ function _isEmptyNode(knode) {
 		return false;
 	}
 	return knode.html().replace(/<[^>]+>/g, '') === '';
-}
+}
 function _mergeWrapper(a, b) {
 	a = a.clone(true);
 	var lastA = _getInnerNode(a), childA = a, merged = false;
@@ -4790,7 +4790,7 @@ function _addBookmarkToStack(stack, bookmark) {
 		stack.push(bookmark);
 	}
 }
-
+
 function _undoToRedo(fromStack, toStack) {
 	var self = this, edit = self.edit,
 		body = edit.doc.body,
@@ -6619,7 +6619,7 @@ KindEditor.plugin('clearhtml', function(K) {
 * @site http://www.kindsoft.net/
 * @licence http://www.kindsoft.net/license.php
 *******************************************************************************/
-
+
 KindEditor.plugin('code', function(K) {
 	var self = this, name = 'code';
 	self.clickToolbar(name, function() {

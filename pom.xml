@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.zhaojian</groupId>
-  <artifactId>zhaojian-practice</artifactId>
+  <artifactId>zhaojian-cms</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <description>这是我们公司打造的一个非常优秀的CMS系统</description>
@@ -32,10 +32,43 @@
 		<pagehelper-version>5.1.2</pagehelper-version>
 
 	</properties>
-	
-  <dependencies>
-  
-  	<!-- redis依赖 -->
+
+	<dependencies>
+
+		<!-- kafka配置 -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>2.2.0.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.2.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jmxri</artifactId>
+					<groupId>com.sun.jmx</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jms</artifactId>
+					<groupId>javax.jms</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jmxtools</artifactId>
+					<groupId>com.sun.jdmk</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.7</version>
+		</dependency>
+
+
+		<!-- redis依赖 -->
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -52,50 +85,51 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-  
-  	<!--  自己的工具类  -->
-  	<dependency>
-  		<groupId>com.zhaojian.utils</groupId>
-  		<artifactId>zhaojian-utils</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	
-  	<!-- spring 及springMVC -->
+
+
+		<!-- 自己的工具类 -->
+		<dependency>
+			<groupId>com.zhaojian.utils</groupId>
+			<artifactId>zhaojian-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- spring 及springMVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<!-- 引用版本 -->
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- 加载上下文环境 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- 实例化Bean工厂 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- web 容器 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- MVC 框架 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- 数据库的连接 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -109,35 +143,35 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- 上下文的支持 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- mybatis核心包 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${mybatis.version}</version>
 		</dependency>
-		
+
 		<!-- mybatis-spring 整合jar -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>${mybatis.spring.version}</version>
 		</dependency>
-		
-		<!-- druid数据源  -->
+
+		<!-- druid数据源 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>
 		</dependency>
-		
+
 		<!-- Mysql数据库驱动包 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -145,27 +179,27 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		<!-- 日志文件管理包 -->
-		
+
 		<!-- log start -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<!-- 记录日志的接口 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${log4japi.version}</version>
 		</dependency>
-		
+
 		<!-- slf 与log4j 之间以各接口 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -180,52 +214,52 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-		
+
 		<!-- 上传组件包 -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
-		
+
 		<!-- 文件的传输 -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
 		</dependency>
-		
+
 		<!-- 用于读写excel文件 -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
-		
+
 		<!-- JSP相关 -->
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 			<version>2.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>${servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!--  json  解析json -->
+
+		<!-- json 解析json -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -245,14 +279,14 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${aspectj-version}</version>
 		</dependency>
-		
-		<!--  后端数据校验  -->
+
+		<!-- 后端数据校验 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -267,7 +301,7 @@
 			<version>${pagehelper-version}</version>
 		</dependency>
 
-		<!--  继承spring的测试 -->
+		<!-- 继承spring的测试 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -280,16 +314,16 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
 	</dependencies>
-  
-  
-  <!-- 构建项目 -->
+
+
+	<!-- 构建项目 -->
 	<build>
 		<plugins>
 			<plugin>
@@ -312,9 +346,9 @@
 				<version>9.3.7.v20160115</version>
 				<configuration>
 					<httpConnector>
-					    <!--  项目端口号 -->
+						<!-- 项目端口号 -->
 						<port>8083</port>
-						 <!--项目路径 -->
+						<!--项目路径 -->
 						<host>localhost</host>
 					</httpConnector>
 					<contextHandlers>
@@ -327,17 +361,17 @@
 							<resourceBase>d:/pic/</resourceBase>
 						</jettyWebAppContext>
 					</contextHandlers>
-				 <scanIntervalSeconds>1</scanIntervalSeconds>
+					<scanIntervalSeconds>1</scanIntervalSeconds>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
-			 <groupId>org.apache.maven.plugins</groupId>
-			 <artifactId>maven-site-plugin</artifactId>
-			 <version>3.7.1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
 			</plugin>
 
 		</plugins>
 	</build>
-	
+
 </project> 
