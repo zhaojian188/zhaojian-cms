@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhaojian.dao.ArticleMapper">
+
+	<resultMap type="Article" id="articleMapper">
+		<id column="id" property="id"/>
+		<result property="channelId" column="channel_id"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="userId" column="user_id"/>
+		<!-- 枚举转换器 -->
+		<result property="articleType" column="articleType"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+			jdbcType="INTEGER" javaType="com.zhaojian.beans.TypeEnum"/>
+		
+		
+		
+		
+		<association property="user" column="user_id" select="com.zhaojian.dao.UserMapper.findUserById"></association>
+		<association property="channel" column="channel_id" select="com.zhaojian.dao.ChannelMapper.findById"></association>
+		<association property="category" column="category_id" select="com.zhaojian.dao.CategoryMapper.findById"></association>
+	</resultMap>
+	
+	<!-- 从mysql数据库中，查询所有文章 -->
+	<select id="findArticle" resultMap="articleMapper">
+		SELECT * FROM cms_article where deleted=0 and status=1
+	</select>
+	<!-- 最新文章 -->
+	<select id="newList" resultType="Article">
+		SELECT id,title FROM cms_article 
+		WHERE deleted=0 AND status=1 
+		ORDER BY created DESC  limit ${value}
+	</select>
+	<!-- 历史文章 -->
+	<select id="hostList" resultMap="articleMapper" >
+		SELECT id,title,picture,channel_id,category_id,user_id,hits,commentCnt,created
+			FROM cms_article 
+			WHERE deleted=0 AND status=1 AND hot=1
+			ORDER BY created DESC 
+	</select>
+	
+	<!-- 获取图片文章 -->
+	<select id="getImgArticles" resultMap="articleMapper" >
+		SELECT id,title,picture,channel_id,category_id,user_id,hits,commentCnt,created,articleType
+			FROM cms_article 
+			WHERE deleted=0 AND status=1 AND articleType=1
+			ORDER BY created DESC 
+			LIMIT #{value}
+	</select>
+	
+	<select id="getById" resultMap="articleMapper">
+		SELECT * FROM cms_article 
+		  WHERE id=#{value} AND deleted=0 AND status=1
+	</select>
+	
+	<select id="listByCat" resultMap="articleMapper">
+		SELECT id,title,picture,channel_id,category_id,user_id,hits,commentCnt,created
+			FROM cms_article 
+			WHERE deleted=0 AND status=1 AND channel_id=#{chnId}
+			<if test=" categoryId!=0 ">
+				AND category_id=#{categoryId}
+			</if>
+			ORDER BY created DESC
+	</select>		
+	
+	<!-- 根据用户获取文章 -->
+	<select id="listByUser" resultMap="articleMapper">
+		SELECT id,title,picture,channel_id,category_id,hits,commentCnt,created,status
+			FROM cms_article 
+			WHERE deleted=0  AND user_id=#{value}
+			ORDER BY created DESC
+	</select>
+	<!-- 我的收藏夹列表 -->
+	<select id="myfavoriteById" resultType="map">
+		select b.* from cms_favorite a left join cms_article b on a.article_id=b.id 
+		where a.user_id=#{id}
+		ORDER BY created DESC
+	</select>
+	
+	<!-- 管理员根据状态查询文章 -->
+	<select id="listByStatus" resultMap="articleMapper">
+		SELECT id,title,picture,channel_id,category_id,hits,commentCnt,created,status,user_id
+			FROM cms_article 
+			WHERE deleted=0  
+			<if test="value != -1 ">
+				AND status = #{value}
+			</if>
+			ORDER BY created DESC
+	</select>
+	
+	<!-- 管理员获取文章详情 -->
+	<select id="getDetailById" resultMap="articleMapper">
+		SELECT * FROM cms_article 
+		  WHERE id=#{value} AND deleted=0
+	</select>
+	
+</mapper>
