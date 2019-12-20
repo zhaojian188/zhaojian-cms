@@ -45,6 +45,7 @@ public class ImportMysql2ES {
 	//3.到pom文件里修改validate版本
 	//    <validator.version>5.1.0.Final</validator.version>
 	
+	//把mysql查询的数据保存到es索引库中
 	@Test
 	public void testImport() {
 		//从mysql数据库中查询所有article对象，放入List集合

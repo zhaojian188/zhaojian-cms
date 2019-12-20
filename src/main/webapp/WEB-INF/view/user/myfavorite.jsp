@@ -33,7 +33,7 @@
 <div class="row" style="text-align: center;padding-top:1px">
 <ul class="pagination" style="text-align:center">
     <li><a href="javascript:goPage(${pageInfo.prePage})">&laquo;</a></li>
-    <c:forEach begin="${pageInfo.pageNum-2 > 1 ? info.pageNum-2:1}" end="${pageInfo.pageNum+2 > info.pages ? info.pages:info.pageNum+2}" varStatus="index">    		
+    <c:forEach begin="${pageInfo.pageNum-2 > 1 ? pageInfo.pageNum-2:1}" end="${pageInfo.pageNum+2 > pageInfo.pages ? pageInfo.pages:pageInfo.pageNum+2}" varStatus="index">    		
     	<c:if test="${pageInfo.pageNum!=index.index}">
     		<li><a href="javascript:goPage(${index.index})">${index.index}</a></li>
     	</c:if>

@@ -138,6 +138,25 @@ public class IndexController {
 		List<Category> categories = categoryService.listByChannelId(chnId);
 		request.setAttribute("categories", categories);
 		
+		//获取热门文章
+		PageInfo<Article> hotList = articleService.hotList(page);
+		request.setAttribute("hotList", hotList);
+		
+		
+		//最新文章
+		List<Article> newArticles = articleService.getNewArticles(5);
+		request.setAttribute("newArticles", newArticles);
+		
+		// 获取最新图片文章
+		List<Article> imgArticles = articleService.getImgArticles(10);
+		request.setAttribute("imgArticles", imgArticles);
+		
+		// 友情链接
+		PageInfo<Link> pageInfo=  linkService.list(1);
+		List<Link> linkList =  pageInfo.getList();
+		request.setAttribute("linkList", linkList);
+		
+		
 		
 		return "index";
 	}
