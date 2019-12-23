@@ -125,8 +125,7 @@
 							<hr width="88%" style="background-color:#D2691E;border:none;height:1px">
 							<ul class="pagination">
 									<!-- 把上一页的值带上模糊查询的key值一块传过去 -->
-								    <li><a href="/index?page=${hotList.prePage}&key=${key}">&laquo;</a></li>
-								    	
+								    <li><a href="/index?page=${hotList.prePage}&key=${key}">&laquo;</a></li>	
 								    <!-- 变量这个pageinfo对象，如果当前页大于1，则让他向前显示2页，如果不是，则让他返回第1页 -->
 								    <c:forEach begin="${hotList.pageNum-2 > 1 ? hotList.pageNum-2:1}" 
 									end="${hotList.pageNum+2 > hotList.pages ? hotList.pages:hotList.pageNum+2}" varStatus="index">    		

@@ -157,12 +157,13 @@ public interface ArticleMapper {
 	 * @return
 	 * @return: int
 	 */
+	//添加文章的sql语句
 	@Insert("INSERT INTO cms_article("
-			+ " title,content,picture,channel_id,category_id,"
+			+ " title,digest,content,picture,channel_id,category_id,"
 			+ " user_id,hits,hot,status,deleted,"
 			+ " created,updated,commentCnt,articleType) "
 			+ " values("
-			+ " #{title},#{content},#{picture},#{channelId},#{categoryId},"
+			+ " #{title},#{digest},#{content},#{picture},#{channelId},#{categoryId},"
 			+ "#{userId},#{hits},#{hot},#{status},#{deleted},"
 			+ "now(),now(),#{commentCnt},"
 			+ "#{articleType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,"
@@ -272,6 +273,15 @@ public interface ArticleMapper {
 	 * @return: List<Article>
 	 */
 	List<Article> findArticle();
+
+
+	/** 
+	 * @Title: updateHits 
+	 * @Description: TODO
+	 * @param article
+	 * @return: void
+	 */
+	void updateHits(Article article);
 
 	
 

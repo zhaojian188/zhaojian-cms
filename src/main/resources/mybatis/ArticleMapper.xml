@@ -14,13 +14,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
 			jdbcType="INTEGER" javaType="com.zhaojian.beans.TypeEnum"/>
 		
-		
-		
-		
 		<association property="user" column="user_id" select="com.zhaojian.dao.UserMapper.findUserById"></association>
 		<association property="channel" column="channel_id" select="com.zhaojian.dao.ChannelMapper.findById"></association>
 		<association property="category" column="category_id" select="com.zhaojian.dao.CategoryMapper.findById"></association>
 	</resultMap>
+	
+	<!-- 点击量修改操作+1 -->
+	<update id="updateHits">
+		update cms_article set hits=#{hits} where id=#{id}
+	</update>
 	
 	<!-- 从mysql数据库中，查询所有文章 -->
 	<select id="findArticle" resultMap="articleMapper">

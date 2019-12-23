@@ -17,7 +17,7 @@
 	 -->
 	<!-- <elasticsearch:transport-client id="client" cluster-nodes="localhost:9300" /> -->
 	<!-- 项目部署到linux系统的ip地址:10.56.33.11:9300 连接es的服务 -->
-	<elasticsearch:transport-client id="client" cluster-nodes="10.56.33.11:9300" />
+	<elasticsearch:transport-client id="client" cluster-nodes="localhost:9300" />
 		 <!-- spring data elasticSearcheDao 必须继承 ElasticsearchTemplate -->
 		
 	<bean id="elasticsearchTemplate"

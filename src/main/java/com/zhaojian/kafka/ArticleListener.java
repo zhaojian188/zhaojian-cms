@@ -25,7 +25,7 @@ import com.zhaojian.dao.ArticleReposit;
  * @ClassName: ArticleListener 
  * @Description: TODO
  * @作者: ZJ 
- * @时间: 2019年12月11日 
+ * @时间: 2019年12月24日 
  */
 public class ArticleListener implements MessageListener<String, String>{
 //	做mysql增删改查用的
@@ -73,10 +73,19 @@ public class ArticleListener implements MessageListener<String, String>{
 			//es数据据库添加TODO
 			String[] split = jsonString.split("=");
 			articleReposit.save(JSON.parseObject(split[1],Article.class));
-		}
-		
-		else {
-			System.err.println("收到了消息:........");
+		}else if(jsonString.startsWith("hits")) {
+			System.err.println("收到消息===="+jsonString);
+			String[] split = jsonString.split("=");
+			int id = Integer.parseInt(split[1]);
+			//根据id查询文章对象
+			Article article = articleMapper.getById(id);
+			//然后修改点击量
+			article.setHits(article.getHits()+1);
+			//修改数据库
+			articleMapper.updateHits(article);
+			
+		}else {
+			System.err.println("收到了消息");
 			Article article = JSON.parseObject(jsonString, Article.class);
 			//保存到mysql
 			articleMapper.add(article);

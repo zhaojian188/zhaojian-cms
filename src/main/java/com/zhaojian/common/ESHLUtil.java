@@ -1,12 +1,12 @@
 /**   
  * Copyright © 2019 公司名. All rights reserved.
  * 
- * @Title: ESUtils.java 
- * @Prject: chengongjun_cms
- * @Package: com.chengongjun.chengongjun_cms.utils 
+ * @Title: ControllerInterceptor.java 
+ * @Prject: zhaojian-cms
+ * @Package: com.zhaojian.common 
  * @Description: TODO
- * @author: chj   
- * @date: 2019年7月24日 上午10:14:13 
+ * @作者: ZJ 
+ * @时间: 2019年12月23日
  * @version: V1.0   
  */
 package com.zhaojian.common;
@@ -23,6 +23,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,101 +31,74 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
-import org.springframework.data.elasticsearch.core.query.GetQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import org.springframework.stereotype.Component;
 
+import com.github.pagehelper.PageInfo;
 
 /**
- * @ClassName: ESUtils
+ * 
+ * @ClassName: ESHLUtil 
  * @Description: TODO
- * @author: 
- * @date: 2019年7月24日 上午10:14:13
+ * @作者: ZJ 
+ * @时间: 2019年12月23日
+ * @param <T>
  */
-public class HLUtils {
+@Component
+public class ESHLUtil<T>  {
 
-
-	/**
-	 * 保存及更新方法
-	 * 
-	 * @param elasticsearchTemplate
-	 * @param id
-	 * @param object
-	 */
-	public static void saveObject(ElasticsearchTemplate elasticsearchTemplate, String id, Object object) {
-		// 创建所以对象
-		IndexQuery query = new IndexQueryBuilder().withId(id).withObject(object).build();
-		// 建立索引
-		elasticsearchTemplate.index(query);
+	private static ElasticsearchTemplate elasticsearchTemplate;
+	
+	private AggregatedPage<T> aggregatedPage;
+	
+	private PageInfo<T> pageInfo;
+	
+	
+	
+	private void setAggregatedPage(AggregatedPage<T> aggregatedPage) {
+		this.aggregatedPage = aggregatedPage;
 	}
 
-	/**
-	 * 批量删除
-	 * 
-	 * @param elasticsearchTemplate
-	 * @param clazz
-	 * @param ids
-	 */
-	public static void deleteObject(ElasticsearchTemplate elasticsearchTemplate, Class<?> clazz, Integer ids[]) {
-		for (Integer id : ids) {
-			// 建立索引
-			elasticsearchTemplate.delete(clazz, id + "");
-		}
+	private void setPageInfo(PageInfo<T> pageInfo) {
+		this.pageInfo = pageInfo;
 	}
 
-	/**
-	 * 
-	 * @Title: selectById
-	 * @Description: 根据id在es服务启中查询对象
-	 * @param elasticsearchTemplate
-	 * @param clazz
-	 * @param id
-	 * @return
-	 * @return: Object
-	 */
-	public static Object selectById(ElasticsearchTemplate elasticsearchTemplate, Class<?> clazz, Integer id) {
-		GetQuery query = new GetQuery();
-		query.setId(id + "");
-		return elasticsearchTemplate.queryForObject(query, clazz);
+	@Autowired
+	private void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
+		ESHLUtil.elasticsearchTemplate = elasticsearchTemplate;
 	}
-
-	// 高亮查询操作
-  /*elasticsearchTemplate:es模板
-	Class<?> clazz:要操作的类对象
-	page:当前页
-	rows:每页展示的数据条数
-	fieldNames[]:要根据查询的字段，查询内容
-	sortField:根据什么进行排序(一般为id)
-	value:模糊查询用户输入的值
-	*/
-	public static AggregatedPage<?> selectObjects(ElasticsearchTemplate elasticsearchTemplate, Class<?> clazz, Integer page,
-			Integer rows, String fieldNames[],String sortField, String value) {
-		AggregatedPage<?> pageInfo = null;
-		// 创建Pageable对象														主键的实体类属性名
-		final Pageable pageable = PageRequest.of(page - 1, rows, Sort.by(Sort.Direction.ASC, sortField));
-		//查询对象
-		SearchQuery query = null;
-		//查询条件高亮的构建对象
-		QueryBuilder queryBuilder = null;
+	
+	// 查询操作,高亮显示
+	public static <T> ESHLUtil<T> selectPageObjects(Class<T> clazz, Integer page, Integer rows,String[] fieldNames ,String sortField, String value) {
+		ESHLUtil<T> ESHLUtil = new ESHLUtil<T>();
 		
+		PageInfo<T> info = new PageInfo<T>();
+		info.setPageNum(page);
+		info.setPageSize(rows);
+		
+		AggregatedPage<T> pageInfo = null;
+		// 创建Pageable对象 主键的实体类属性名
+		final Pageable pageable = PageRequest.of(page - 1, rows, Sort.by(Sort.Direction.ASC, sortField));
+		// 查询对象
+		SearchQuery query = null;
+		// 查询条件高亮的构建对象
+		QueryBuilder queryBuilder = null;
+
 		if (value != null && !"".equals(value)) {
 			// 高亮拼接的前缀与后缀
 			String preTags = "<font color=\"red\">";
 			String postTags = "</font>";
 
 			// 定义创建高亮的构建集合对象
-			HighlightBuilder.Field highlightFields[] = new HighlightBuilder.Field[fieldNames.length];
-
-			for (int i = 0; i < fieldNames.length; i++) {
-				// 这个代码有问题
-				highlightFields[i] = new HighlightBuilder.Field(fieldNames[i]).preTags(preTags).postTags(postTags);
-			}
-
+			HighlightBuilder.Field nameField = new HighlightBuilder
+	                .Field("*").matchedFields(fieldNames)
+	                .preTags(preTags)
+	                .postTags(postTags);
+			
 			// 创建queryBuilder对象
 			queryBuilder = QueryBuilders.multiMatchQuery(value, fieldNames);
-			query = new NativeSearchQueryBuilder().withQuery(queryBuilder).withHighlightFields(highlightFields)
+			query = new NativeSearchQueryBuilder().withQuery(queryBuilder).withHighlightFields(nameField)
 					.withPageable(pageable).build();
 
 			pageInfo = elasticsearchTemplate.queryForPage(query, clazz, new SearchResultMapper() {
@@ -138,7 +112,7 @@ public class HLUtils {
 						// 查询结果
 						SearchHits hits = response.getHits();
 						if (hits != null) {
-							//获取总记录数
+							// 获取总记录数
 							total = hits.getTotalHits();
 							// 获取结果数组
 							SearchHit[] searchHits = hits.getHits();
@@ -150,7 +124,7 @@ public class HLUtils {
 									T entity = clazz.newInstance();
 
 									// 获取具体的结果
-									SearchHit searchHit = searchHits[i]; 
+									SearchHit searchHit = searchHits[i];
 
 									// 获取对象的所有的字段
 									Field[] fields = clazz.getDeclaredFields();
@@ -163,8 +137,10 @@ public class HLUtils {
 										field.setAccessible(true);
 										// 字段名称
 										String fieldName = field.getName();
-										if (!fieldName.equals("serialVersionUID")&&!fieldName.equals("user")&&!fieldName.equals("channel")
-												&&!fieldName.equals("category")&&!fieldName.equals("articleType")&&!fieldName.equals("imgList")) {
+										if (!fieldName.equals("serialVersionUID") && !fieldName.equals("user")
+												&&!fieldName.equals("channel")&&!fieldName.equals("category")
+												&&!fieldName.equals("articleType")&&!fieldName.equals("imgList")) {
+											
 											HighlightField highlightField = searchHit.getHighlightFields()
 													.get(fieldName);
 											if (highlightField != null) {
@@ -173,14 +149,18 @@ public class HLUtils {
 												// 注意一下他是否是 string类型
 												field.set(entity, value);
 											} else {
-												//获取某个字段对应的 value值
+												// 获取某个字段对应的 value值
 												Object value = searchHit.getSourceAsMap().get(fieldName);
 												// 获取字段的类型
 												Class<?> type = field.getType();
 												if (type == Date.class) {
 													// bug
-													if(value!=null) {
+													if (value != null) {
 														field.set(entity, new Date(Long.valueOf(value + "")));
+													}
+												}else if(type == java.sql.Date.class) {
+													if (value != null) {
+														field.set(entity, new java.sql.Date(Long.valueOf(value + "")));
 													}
 												} else {
 													field.set(entity, value);
@@ -206,9 +186,25 @@ public class HLUtils {
 			query = new NativeSearchQueryBuilder().withPageable(pageable).build();
 			pageInfo = elasticsearchTemplate.queryForPage(query, clazz);
 		}
-
-
-		return pageInfo;
+		
+		info.setTotal((int) pageInfo.getTotalElements());
+		ESHLUtil.setPageInfo(info);
+		ESHLUtil.setAggregatedPage(pageInfo);
+		
+		return ESHLUtil;
 	}
-
+	
+	
+	public AggregatedPage<T> getAggregatedPage() {
+		return this.aggregatedPage;
+	}
+	
+	public PageInfo<T> getPageInfo(){
+		this.pageInfo.setList(this.aggregatedPage.getContent());
+		int pages = (int) (this.pageInfo.getTotal() / this.pageInfo.getPageSize() + ((this.pageInfo.getTotal() % this.pageInfo.getPageSize() == 0) ? 0 : 1 ));
+		this.pageInfo.setPages(pages);
+		
+		return this.pageInfo;
+	}
+	
 }

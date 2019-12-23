@@ -317,6 +317,19 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		return new PageInfo<Comment>(articleMapper.commentlist(articleId));
 	}
+	
+	
+	/* (non Javadoc) 
+	 * @Title: updateHits
+	 * @Description: TODO
+	 * @param article 
+	 * @see com.zhaojian.service.ArticleService#updateHits(com.zhaojian.beans.Article) 
+	 */
+	@Override
+	public void updateHits(Article article) {
+		
+		articleMapper.updateHits(article);
+	}
 
 	
 

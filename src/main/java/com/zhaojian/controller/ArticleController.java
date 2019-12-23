@@ -12,10 +12,14 @@
 package com.zhaojian.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +53,15 @@ public class ArticleController {
 	
 	@Autowired
 	CategoryService catService; 
+	
+	@Autowired
+	RedisTemplate redisTemplate;
+	
+	@Autowired
+	KafkaTemplate<String, String> kafkaTemplate;
+	//线程池任务执行器
+	@Autowired
+	ThreadPoolTaskExecutor executor;
 	/**
 	 * 
 	 * @Title: showDetail 
@@ -62,6 +75,52 @@ public class ArticleController {
 	public String showDetail(HttpServletRequest request,Integer id) {
 		
 		Article article = articleService.getById(id); 
+		
+		/**
+		 * 为CMS系统文章最终页（详情页），每访问一次就同时往文章表的浏览量字段加1，
+		 * 如果一篇文章集中一时刻上百万次浏览，就会给数据库造成压力。现在请你利用Kafka进行流量削峰。
+		 * 当用户浏览文章时，往Kafka发送文章ID，在消费端获取文章ID，再执行数据库加1操作
+		 */
+		//==================BBBBBBBBB=================================
+		//当用户浏览文章时，往Kafka发送文章ID
+		kafkaTemplate.send("articles", "hits="+id+"");
+		
+		System.err.println("发送到kafka成功======="+id);
+		
+		
+		
+		
+		
+		/**
+		 * 现在请你利用Redis提高性能，当用户浏览文章时，将“Hits_${文章ID}_${用户IP地址}”为key，
+		 * 查询Redis里有没有该key，如果有key，则不做任何操作。如果没有，则使用Spring线程池异步执行数据库加1操作，
+		 * 并往Redis保存key为Hits_${文章ID}_${用户IP地址}，value为空值的记录，而且有效时长为5分钟。
+		 */
+		//========================AAAAAAAAAAAAA====================
+		/*//获取本机的ip地址
+		String ip = request.getLocalAddr();
+		//将“Hits_${文章ID}_${用户IP地址}”为key，
+		String key = "Hits_"+id+"_"+ip;
+		//查询Redis里有没有该key，如果有key，则不做任何操作。如果没有，则使用Spring线程池异步执行数据库加1操作，
+		String data = (String) redisTemplate.opsForValue().get(key);
+		//如果没有key，则异步+1
+		if(data==null) {
+			executor.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					//使用Spring线程池异步执行数据库加1操作
+					article.setHits(article.getHits()+1);
+					//修改数据库的数据
+					articleService.updateHits(article);
+					//并往Redis保存key为Hits_${文章ID}_${用户IP地址}
+					redisTemplate.opsForValue().set(key, "", 5,TimeUnit.MINUTES);
+				}
+			});
+		}*/
+		//==============================AAAAAAAAAAAAAAAAAA============================
+		
+		
 		CmsAssert.AssertTrueHtml(article!=null, "文章不存在");
 		
 		request.setAttribute("article",article);

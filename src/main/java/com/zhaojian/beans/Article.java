@@ -42,6 +42,8 @@ public class Article implements Serializable{
 	// 文章标题
 	@Field(analyzer="ik_smart",index=true,store=true,searchAnalyzer="ik_smart",type=FieldType.text)
 	private String title            ;
+	//文章摘要
+	private String digest;
 	// 文章内容
 	@Field(analyzer="ik_smart",index=true,store=true,searchAnalyzer="ik_smart",type=FieldType.text)
 	private String content          ;
@@ -115,7 +117,21 @@ public class Article implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	/**
+	 * @return the digest
+	 */
+	public String getDigest() {
+		return digest;
+	}
 
+	/**
+	 * @param digest the digest to set
+	 */
+	public void setDigest(String digest) {
+		this.digest = digest;
+	}
+	
 	/**
 	 * @return the content
 	 */
@@ -362,14 +378,15 @@ public class Article implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "Article [id=" + id + ", title=" + title + ", content="
-				+ content + ", picture=" + picture + ", channelId=" + channelId
-				+ ", channel=" + channel + ", categoryId=" + categoryId
-				+ ", category=" + category + ", userId=" + userId + ", user="
-				+ user + ", hits=" + hits + ", hot=" + hot + ", status="
-				+ status + ", deleted=" + deleted + ", created=" + created
-				+ ", updated=" + updated + ", commentCnt=" + commentCnt
-				+ ", articleType=" + articleType + ", imgList=" + imgList + "]";
+		return "Article [id=" + id + ", title=" + title + ", digest=" + digest
+				+ ", content=" + content + ", picture=" + picture
+				+ ", channelId=" + channelId + ", channel=" + channel
+				+ ", categoryId=" + categoryId + ", category=" + category
+				+ ", userId=" + userId + ", user=" + user + ", hits=" + hits
+				+ ", hot=" + hot + ", status=" + status + ", deleted="
+				+ deleted + ", created=" + created + ", updated=" + updated
+				+ ", commentCnt=" + commentCnt + ", articleType=" + articleType
+				+ ", imgList=" + imgList + "]";
 	}
 
 	/* (non Javadoc) 
@@ -395,6 +412,7 @@ public class Article implements Serializable{
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
 		result = prime * result + deleted;
+		result = prime * result + ((digest == null) ? 0 : digest.hashCode());
 		result = prime * result + hits;
 		result = prime * result + hot;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -460,6 +478,11 @@ public class Article implements Serializable{
 			return false;
 		if (deleted != other.deleted)
 			return false;
+		if (digest == null) {
+			if (other.digest != null)
+				return false;
+		} else if (!digest.equals(other.digest))
+			return false;
 		if (hits != other.hits)
 			return false;
 		if (hot != other.hot)
@@ -503,9 +526,6 @@ public class Article implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
 	
 }
  	

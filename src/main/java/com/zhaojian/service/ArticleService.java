@@ -207,6 +207,15 @@ public interface ArticleService {
 	 */
 	PageInfo<Comment> commentlist(int articleId, int page);
 
+	
+	/** 
+	 * @Title: updateHits 
+	 * @Description: 修改点击量
+	 * @param article
+	 * @return: void
+	 */
+	void updateHits(Article article);
+
 }
 
 	
