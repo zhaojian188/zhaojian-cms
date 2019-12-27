@@ -20,7 +20,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** 
  * @ClassName: Article 
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @作者: ZJ 
  * @时间: 2019年11月14日 
  */
-//索引库的名称和类型都要用小写字母，用大写字目会报错！！！！！！！！！！！
+//索引库的名称和类型都要用小写字母
 @Document(indexName="cms_article",type="article")
 public class Article implements Serializable{
 	/**
@@ -117,7 +116,7 @@ public class Article implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	/**
 	 * @return the digest
 	 */
@@ -131,7 +130,7 @@ public class Article implements Serializable{
 	public void setDigest(String digest) {
 		this.digest = digest;
 	}
-	
+
 	/**
 	 * @return the content
 	 */

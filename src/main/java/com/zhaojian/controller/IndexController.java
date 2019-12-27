@@ -82,58 +82,29 @@ public class IndexController {
 			@RequestParam(defaultValue="1")int chnId,
 			@RequestParam(defaultValue="0")int categoryId) {
 		
-		/*//如果当前页等于0
-		
-		//注入仓库
-		//1.根据标题来搜索文章并且搜索的关键字高亮显示 
-		AggregatedPage<?> selectObjects = HLUtils.selectObjects(elasticsearchTemplate, Article.class, page, ConstantClass.PAGE_SIZE, new String [] {"title"}, "id", key);
-		//返回要查询包含关键字的集合
-		List<Article> list = (List<Article>) selectObjects.getContent();
-		//2.用es查询好的数据做分页处理
-		//把查询到的集合放入PageInfo分页工具类，进行分页
-		PageInfo<Article> info = new PageInfo<>(list);
-		
-		//设置当前页
-		info.setPageNum(page);
-		//设置每页展示的数据
-		info.setPageSize(ConstantClass.PAGE_SIZE);
-		//设置数据总条数
-		info.setTotal(selectObjects.getTotalElements());
-		//获取总页(三木运算判断，如果总条数%每页展示的数据==0，他就是总页数，如果不是，则是总页数+1)
-		int pages = (int) (selectObjects.getTotalElements()%ConstantClass.PAGE_SIZE==0?selectObjects.getTotalElements()/ConstantClass.PAGE_SIZE:selectObjects.getTotalElements()/ConstantClass.PAGE_SIZE+1);
-		if(selectObjects.getTotalElements()%ConstantClass.PAGE_SIZE == 0){
-			int pages = (int) (selectObjects.getTotalElements() / ConstantClass.PAGE_SIZE);
-		} else {
-			int pages = (int) (selectObjects.getTotalElements() / ConstantClass.PAGE_SIZE + 1);
-		}
-		//设置总页数
-		info.setPages(pages);
-		//如果当前页等于最后一页
-		if(page == pages){
-			//就让当前页等于最后一页
-			page=pages;
-		}
-		//设置上一页
-		info.setPrePage(page-1);
-		//设置下一页
-		info.setNextPage(page+1);*/
-		
-		if(page==0) {
-			//就让当期前页等于1
-			page = 1;
+		//如果当前页是0页的话，让他返回第1页
+		if(page==0){
+			page=1;
 		}
 		
-		ESHLUtil<Article> selectPageObjects = ESHLUtil.selectPageObjects(Article.class, page, ConstantClass.PAGE_SIZE, new String [] {"title"}, "id", key);
-		PageInfo<Article> info = selectPageObjects.getPageInfo();
+		long start = System.currentTimeMillis();
+		//引入高亮工具类,得到从es索引库查询到的集合对象
+		ESHLUtil<Article> esList = ESHLUtil.selectPageObjects(Article.class, page, ConstantClass.PAGE_SIZE, new String [] {"title"}, "id", key);
+		//调用分页工具类
+		PageInfo<Article> info = esList.getPageInfo();
+		
+		long end = System.currentTimeMillis();
+		//搜索结果要显示本次搜索所耗时长
+		System.err.println("====本次搜索耗时:"+(end-start)+"ms");
 		//设置上一页
 		info.setPrePage(page-1);
 		//设置下一页
 		info.setNextPage(page+1);
 		
-		//分页对象放到model作用域里面
+		//把对象加入model作用域
 		m.addAttribute("hotList", info);
-		//把模糊查询的值放入model作用域，做全局查询的回显时用
 		m.addAttribute("key", key);
+		
 		
 		// 回传参数数值
 		request.setAttribute("chnId", chnId);
